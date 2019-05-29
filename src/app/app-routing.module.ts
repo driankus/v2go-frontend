@@ -3,7 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
 import { AuthGaurd } from './shared/services/auth.gaurd';
 import { BlankLayoutComponent } from './shared/components/layouts/blank-layout/blank-layout.component';
-import { AdminLayoutSidebarCompactComponent } from './shared/components/layouts/admin-layout-sidebar-compact/admin-layout-sidebar-compact.component';
+import { DriverLayoutComponent } from './shared/components/layouts/driver-layout/driver-layout.component';
 import { AdminLayoutSidebarLargeComponent } from './shared/components/layouts/admin-layout-sidebar-large/admin-layout-sidebar-large.component';
 
 const adminRoutes: Routes = [
@@ -75,9 +75,20 @@ const routes: Routes = [
       }
     ]
   },
+  // Driver Rout
+  // {
+  //   path: 'driver',
+  //   component: DriverLayoutComponent,
+  //   children: [
+  //     {
+  //       path: '',
+  //       loadChildren: './views/others/others.module#OthersModule'
+  //     }
+  //   ]
+  // },
   {
     path: '',
-    component: AdminLayoutSidebarLargeComponent,
+    component: DriverLayoutComponent,
     canActivate: [AuthGaurd],
     children: adminRoutes
   },
