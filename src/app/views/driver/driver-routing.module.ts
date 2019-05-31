@@ -5,7 +5,7 @@ import { HomeMapComponent } from '../home-map/home-map.component';
 
 const driverRoutes: Routes = [
     {
-      path: 'home',
+      path: '',
       component: HomeMapComponent
     },
 ];

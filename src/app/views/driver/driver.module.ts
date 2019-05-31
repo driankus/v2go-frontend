@@ -15,4 +15,4 @@ import { HomeMapComponent } from '../home-map/home-map.component';
     ],
     declarations: [ HomeMapComponent ]
   })
-  export class DashboardModule { }
+  export class DriverModule { }
