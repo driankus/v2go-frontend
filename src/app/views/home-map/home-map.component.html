@@ -23,7 +23,7 @@
         <div class="card">
             <div 
             class="card-body"
-            *ngIf="stationsList.length > 0; else noStationsFound"
+            *ngIf="stationsList !== undefined && stationsList.length > 0 ; else noStationsFound"
             >
                 <div class="card-title">{{ stationsList?.length }} Stations Found</div>
                 <div 
