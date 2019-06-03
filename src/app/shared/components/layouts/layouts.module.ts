@@ -7,6 +7,7 @@ import { AuthLayoutComponent } from './auth-layout/auth-layout.component';
 import { BlankLayoutComponent } from './blank-layout/blank-layout.component';
 //V2goLayouts
 import { DriverLayoutComponent } from './driver-layout/driver-layout.component';
+import { DriverHeaderComponent } from './driver-layout/driver-header/driver-header.component';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
@@ -32,7 +33,8 @@ const components = [
     AdminLayoutSidebarCompactComponent,
     AuthLayoutComponent,
     BlankLayoutComponent,
-    DriverLayoutComponent
+    DriverLayoutComponent,
+    DriverHeaderComponent
 ];
 
 @NgModule({
