@@ -1,5 +1,5 @@
-
 <div class="row">
+    <!-- Search/Results side-bar -->
     <div class="card col-lg-3 col-md-6 col-sm-6">      
         <div class="card-body">
             <div class="card-title">CS by coordinates</div>
@@ -18,10 +18,13 @@
                 </form>
             </div>
         </div>
+        <hr>
         <div class="card-body">
             <div class="card-title">CS Found</div>
-            <div *ngFor="let station of stationsList"
-            class="d-flex align-items-left border-bottom-dotted-dim pb-3 mb-3">
+            <div 
+            *ngFor="let station of stationsList"
+            class="d-flex align-items-left border-bottom-dotted-dim pb-3 mb-3"
+            >
                 <div class="flex-grow-1">
                     <h6 class="m-0">CS {{station.name}}</h6>
                     <p class="m-0 text-small text-muted">{{station.address}}</p>
@@ -32,10 +35,33 @@
             </div>
         </div>
     </div>
-
+    <!-- Map -->
     <div class="col-lg-9 col-md-6 col-sm-6">
-        <h2>Map</h2>
+        <!-- <div class="card-body"> -->
+            <agm-map [latitude]="poiLat" [longitude]="poiLng" (mapClick)="onChoseLocation($event)" [zoom]="zoom">
+                <!-- Driver marker-->
+                <agm-marker
+                [latitude]="driver.lat"
+                [longitude]="driver.lng"
+                [iconUrl]="driver.icon"
+                *ngIf="driver"
+                ></agm-marker>
+                <!-- Stations marker -->
+                <agm-marker
+                *ngFor="let station of stationsList"
+                [latitude]="station.lat"
+                [longitude]="station.lng"
+                [label]="station.id"
+                ></agm-marker> 
+                <!-- POI marker -->
+                <agm-marker
+                [latitude]="poiLat"
+                [longitude]="poiLng"  
+                [iconUrl]="poiIcon"
+                *ngIf="locationChosen"
+                ></agm-marker> 
+            </agm-map>
+        <!-- </div> -->
     </div>
-
 
 </div>

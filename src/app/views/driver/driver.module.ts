@@ -2,10 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
-import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
+import { AgmCoreModule } from '@agm/core';
 import { DriverRoutingModule } from './driver-routing.module';
 import { HomeMapComponent } from '../home-map/home-map.component';
+import { environment } from '../../../environments/environment';
 
 @NgModule({
     imports: [
@@ -15,6 +17,9 @@ import { HomeMapComponent } from '../home-map/home-map.component';
       FormsModule,
       ReactiveFormsModule,
       NgbModule,
+      AgmCoreModule.forRoot({
+        apiKey: environment.GOOGLE_API_KEY
+      }),
       DriverRoutingModule
     ],
     declarations: [ HomeMapComponent ]

@@ -42,11 +42,13 @@ export class HomeMapComponent implements OnInit {
 
   stationsList: ChargingStation[];
   driver: Marker;
-  locationChosen = false;
 
+  // Map params
+  locationChosen = false;
   // Default values for Point of Interest (poi) coordinates is MTL
   poiLat = 45.508048;
   poiLng = -73.568025;
+  zoom = 13;
 
   constructor(
     // private fb: FormBuilder,
