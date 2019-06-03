@@ -69,13 +69,13 @@ export class HomeMapComponent implements OnInit {
   //     experience: []
   //   });
   // }
-  submit() {
+  onSubmit() {
     this.loading = true;
     setTimeout(() => {
       this.loading = false;
+      this.findStations(this.poiLat, this.poiLng);
       // this.toastr.success('Profile updated.', 'Success!', {progressBar: true});
-      console.log('# Submit!');
-    }, 3000);
+    }, 100);
   }
 
   /**
@@ -106,7 +106,6 @@ export class HomeMapComponent implements OnInit {
    * then, displays user ans CS on map.
    */
   searchStationsNearMe(): void {
-    console.log('#'.repeat(100), 'searchStationsNearMe !!!');
     getCurrentPosition.subscribe( position => {
         this.poiLat = position.coords.latitude;
         this.poiLng = position.coords.longitude;
