@@ -19,6 +19,10 @@ const routes: Routes = [
   //   pathMatch: 'full'
   // },
   {
+    path: 'forms',
+    loadChildren: './views/forms/forms.module#AppFormsModule'
+  },
+  {
     path: '',
     component: AuthLayoutComponent,
     children: [

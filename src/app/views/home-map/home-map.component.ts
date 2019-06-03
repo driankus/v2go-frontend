@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
+import { FormGroup, FormBuilder } from '@angular/forms';
 import { SearchStationsService } from '../../shared/services/api.service';
 import { ChargingStation } from '../../shared/models/charging-station';
+import { ToastrService } from 'ngx-toastr';
 
 class Marker {
   constructor(
@@ -34,6 +36,10 @@ const getCurrentPosition = new Observable<Position>(observer => {
   styleUrls: ['./home-map.component.scss']
 })
 export class HomeMapComponent implements OnInit {
+  // Form stuff
+  // formSearch: FormGroup;
+  loading: boolean;
+
   stationsList: ChargingStation[];
   driver: Marker;
   locationChosen = false;
@@ -43,14 +49,38 @@ export class HomeMapComponent implements OnInit {
   poiLng = -73.568025;
 
   constructor(
+    // private fb: FormBuilder,
     private searchService: SearchStationsService,
+    // private toastr: ToastrService
   ) { }
 
   ngOnInit() {
     this.searchStationsNearMe();
+    // this.buildFormSearch();
   }
   /**
+   *  FORM STUFF
+   *
+   */
+  // buildFormSearch() {
+  //   this.formSearch = this.fb.group({
+  //     experience: []
+  //   });
+  // }
+  submit() {
+    this.loading = true;
+    setTimeout(() => {
+      this.loading = false;
+      // this.toastr.success('Profile updated.', 'Success!', {progressBar: true});
+      console.log('# Submit!');
+    }, 3000);
+  }
+
+  /**
    * Method uses searchService (observer) to call api/find-station. Returns an array of CSs
+   *
+   * @param lat
+   * @param lng
    */
   findStations(lat: number, lng: number): void {
     this.searchService.findStations(lat, lng)
