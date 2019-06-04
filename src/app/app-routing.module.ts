@@ -19,10 +19,6 @@ const routes: Routes = [
   //   pathMatch: 'full'
   // },
   {
-    path: 'forms',
-    loadChildren: './views/forms/forms.module#AppFormsModule'
-  },
-  {
     path: '',
     component: AuthLayoutComponent,
     children: [
@@ -40,7 +36,15 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: './views/driver/driver.module#DriverModule'
-      }
+      },
+      {
+        path: 'forms',
+        loadChildren: './views/forms/forms.module#AppFormsModule'
+      },
+      {
+        path: 'calendar',
+        loadChildren: './views/calendar/calendar.module#CalendarAppModule'
+      },
     ]
   },
   {

@@ -29,24 +29,19 @@ export class CalendarEventDB {
         _id: '100',
         start: subDays(startOfDay(new Date()), 1),
         end: addDays(new Date(), 1),
-        title: 'A 3 day event',
+        title: 'Station #412 (reserved)',
         color: this.colors.red
     }, {
         _id: '101',
         start: startOfDay(new Date()),
-        title: 'An event with no end date',
+        end: addDays(new Date(), 1),
+        title: 'Station #337 (reserved)',
         color: this.colors.yellow
-    }, {
-        _id: '102',
-        start: subDays(endOfMonth(new Date()), 3),
-        end: addDays(endOfMonth(new Date()), 3),
-        title: 'A long event that spans 2 months',
-        color: this.colors.blue
     }, {
         _id: '103',
         start: addHours(startOfDay(new Date()), 2),
         end: new Date(),
-        title: 'A draggable and resizable event',
+        title: 'My reservation',
         color: this.colors.yellow,
         resizable: {
             beforeStart: true,
