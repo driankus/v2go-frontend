@@ -9,8 +9,9 @@ import { ChargingStation } from '../../../shared/models/charging-station';
 export class StationDetailComponent {
   @Input() station: ChargingStation;
   @Output() unselectStation = new EventEmitter<undefined>();
+  numbers = [1,2,3,4];
 
-  constructor() { }
+  constructor(private apiService: ) { }
 
   backToResults(): void {
     this.unselectStation.emit(undefined);
