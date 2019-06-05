@@ -1,82 +1,91 @@
 <div class="row">
-    <!-- Search/Results side-bar -->
-    <div class="col-lg-3 col-md-6 col-sm-6">      
-        <div class="card">
-            <div class="card-body">
-                <div class="card-title">CS by coordinates</div>
-                <!-- <div class="d-flex flex-column"    > -->
-                    <!-- <form [formGroup]="formSearch" (ngSubmit)="submit()"> -->
-                    <form #requestForm="ngForm" novalidate (ngSubmit)="onSubmit()">
-                        <div class="form-group">
-                            <!-- <input type="text" class="form-control" placeholder="Enter your username"> -->
-                            <input type="text" class="form-control" [(ngModel)]="poiLat" name="poiLat">
-                        </div>
-                        <div class="form-group">
-                            <!-- <input type="password" class="form-control" placeholder="Enter your password"> -->
-                            <input type="text" class="form-control" [(ngModel)]="poiLng" name="poiLng">
-                        </div>
-                        <button type="submit" value="Submit" class="btn btn-primary pd-x-20">Search</button>
-                    </form>
-                <!-- </div> -->
-            </div>
-        </div>
-        <div class="card">
+  <!-- Search/Results side-bar -->
+  <div class="col-lg-3 col-md-6 col-sm-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="card-title">CS by coordinates</div>
+        <form 
+        #requestForm="ngForm" 
+        novalidate 
+        (ngSubmit)="onSubmit()"
+        >
+          <div class="form-group">
+            <input type="text" class="form-control" [(ngModel)]="poiLat" name="poiLat">
+          </div>
+          <div class="form-group">
+            <input type="text" class="form-control" [(ngModel)]="poiLng" name="poiLng">
+          </div>
+          <button type="submit" value="Submit" class="btn btn-primary pd-x-20">Search</button>
+        </form>
+      </div>
+    </div>
+    <app-station-detail
+    *ngIf="selectedStation; else stationResult"
+    [station]="selectedStation"
+    (unselectStation)="selectedStation=$event"
+    ></app-station-detail>
+    <ng-template #stationResult>
+      <div class="card">
+          <div 
+          class="card-body" 
+          *ngIf="stationsList !== undefined && stationsList.length > 0 ; else noStationsFound"
+          >
+            <div class="card-title">{{ stationsList?.length }} Stations Found</div>
             <div 
-            class="card-body"
-            *ngIf="stationsList !== undefined && stationsList.length > 0 ; else noStationsFound"
+            *ngFor="let station of stationsList" 
+            class="d-flex align-items-left border-bottom-dotted-dim pb-3 mb-3"
             >
-                <div class="card-title">{{ stationsList?.length }} Stations Found</div>
-                <div 
-                *ngFor="let station of stationsList"
-                class="d-flex align-items-left border-bottom-dotted-dim pb-3 mb-3"
-                >
-                    <div class="flex-grow-1">
-                        <h6 class="m-0">CS {{station.name}}</h6>
-                        <p class="m-0 text-small text-muted">{{station.address}}</p>
-                        <div>
-                            <button class="btn btn-outline-primary btn-rounded btn-sm">Detail</button>
-                        </div>
-                    </div>
+              <div class="flex-grow-1">
+                <h6 class="m-0">CS {{station.name}}</h6>
+                <p class="m-0 text-small text-muted">{{station.address}}</p>
+                <div>
+                  <button 
+                  class="btn btn-outline-primary btn-rounded btn-sm"
+                  (click)="selectedStation=station"
+                  >Detail</button>
                 </div>
+              </div>
             </div>
-            
-            <ng-template #noStationsFound>
-                <div class="card-body">
-                    <div class="card-title">No Stations found near this location.</div>
-                    <div class="d-flex align-items-left border-bottom-dotted-dim pb-3 mb-3">
-                        <p>Please try again.</p>
-                    </div>
+          </div>
+    
+          <ng-template #noStationsFound>
+              <div class="card-body">
+                <div class="card-title">No Stations found near this location.</div>
+                <div class="d-flex align-items-left border-bottom-dotted-dim pb-3 mb-3">
+                  <p>Please try again.</p>
                 </div>
-            </ng-template>
+              </div>          
+          </ng-template>
         </div>
-    </div>
-    <!-- Map -->
-    <div class="col-lg-9 col-md-6 col-sm-6">
-        <!-- <div class="card-body"> -->
-            <agm-map [latitude]="poiLat" [longitude]="poiLng" (mapClick)="onChoseLocation($event)" [zoom]="zoom">
-                <!-- Driver marker-->
-                <agm-marker
-                [latitude]="driver.lat"
-                [longitude]="driver.lng"
-                [iconUrl]="driver.icon"
-                *ngIf="driver"
-                ></agm-marker>
-                <!-- Stations marker -->
-                <agm-marker
-                *ngFor="let station of stationsList"
-                [latitude]="station.lat"
-                [longitude]="station.lng"
-                [label]="station.id"
-                ></agm-marker> 
-                <!-- POI marker -->
-                <agm-marker
-                [latitude]="poiLat"
-                [longitude]="poiLng"  
-                [iconUrl]="poiIcon"
-                *ngIf="locationChosen"
-                ></agm-marker> 
-            </agm-map>
-        <!-- </div> -->
-    </div>
+    </ng-template>
+  </div>
+
+  <!-- Map -->
+  <div class="col-lg-9 col-md-6 col-sm-6">
+    <agm-map 
+    [latitude]="poiLat" 
+    [longitude]="poiLng" 
+    (mapClick)="onChoseLocation($event)" 
+    [zoom]="zoom">
+      <!-- Driver marker-->
+      <agm-marker 
+      [latitude]="driver.lat" 
+      [longitude]="driver.lng" 
+      [iconUrl]="driver.icon" 
+      *ngIf="driver"></agm-marker>
+      <!-- Stations marker -->
+      <agm-marker 
+      *ngFor="let station of stationsList" 
+      [latitude]="station.lat" 
+      [longitude]="station.lng"
+      [label]="station.id"></agm-marker>
+      <!-- POI marker -->
+      <agm-marker 
+      [latitude]="poiLat" 
+      [longitude]="poiLng" 
+      [iconUrl]="poiIcon" 
+      *ngIf="locationChosen"></agm-marker>
+    </agm-map>
+  </div>
 
 </div>

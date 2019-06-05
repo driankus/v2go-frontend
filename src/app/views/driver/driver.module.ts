@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SharedComponentsModule } from 'src/app/shared/components/shared-components.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { environment } from '../../../environments/environment';
 import { AgmCoreModule } from '@agm/core';
 import { DriverRoutingModule } from './driver-routing.module';
 import { HomeMapComponent } from '../home-map/home-map.component';
-import { environment } from '../../../environments/environment';
+import { StationDetailComponent } from '../home-map/station-detail/station-detail.component';
+
 
 @NgModule({
     imports: [
@@ -22,6 +23,6 @@ import { environment } from '../../../environments/environment';
       }),
       DriverRoutingModule
     ],
-    declarations: [ HomeMapComponent ]
+    declarations: [ HomeMapComponent, StationDetailComponent ]
   })
 export class DriverModule { }
