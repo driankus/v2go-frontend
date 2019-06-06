@@ -56,7 +56,7 @@ export class MainService {
   providedIn: 'root'
 })
 export class ReservationService {
-  API_URL = environment.devUrl + 'volt_reservation/';
+  API_URL = this.API_URL + 'volt_reservation/reservations/';
   user: User;
 
   constructor(private http: HttpClient) {
@@ -74,7 +74,7 @@ export class ReservationService {
   }
 
   public makeReservation(eventCsNk, evNk): Observable<Reservation> {
-    return this.http.post<Reservation>(this.API_URL + 'reservations/',
+    return this.http.post<Reservation>(this.API_URL,
       {
         event_cs_nk: eventCsNk,
         ev_nk: evNk
