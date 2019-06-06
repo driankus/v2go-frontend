@@ -4,6 +4,8 @@ import { environment } from './../../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { ChargingStation } from '../models/charging-station';
+import { User } from '../models/user';
+import { Reservation } from '../models/reservation';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +33,26 @@ export class SearchStationsService {
         map(stationsList => stationsList.map(station => ChargingStation.create(station)))
       );
     }
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReservationService {
+  API_URL = this.API_URL + 'volt_reservation/reservations/';
+  user: User;
+
+  constructor(private http: HttpClient) {
+    const userData = localStorage.getItem('v2go.user');
+    this.user = User.create(JSON.parse(userData));
+  }
+
+  public makeReservation(eventCsNk, evNk): Observable<Reservation> {
+    return this.http.post<Reservation>(this.API_URL,
+      {
+        event_cs_nk: eventCsNk,
+        ev_nk: evNk
+      });
   }
 }
