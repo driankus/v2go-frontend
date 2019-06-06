@@ -96,7 +96,7 @@ export class ReservationService {
   }
 
   public makeReservation(eventCsNk, evNk): Observable<Reservation> {
-    return this.http.post<Reservation>(this.API_URL + 'reservations/',
+    return this.http.post<Reservation>(this.API_URL,
       {
         event_cs_nk: eventCsNk,
         ev_nk: evNk
