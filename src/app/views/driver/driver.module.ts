@@ -9,7 +9,7 @@ import { DriverRoutingModule } from './driver-routing.module';
 import { HomeMapComponent } from '../home-map/home-map.component';
 import { StationDetailComponent } from '../home-map/station-detail/station-detail.component';
 import { ProfileComponent } from './profile/profile.component';
-
+import { ReservationComponent } from '../reservation/reservation.component';
 
 @NgModule({
     imports: [
@@ -24,6 +24,6 @@ import { ProfileComponent } from './profile/profile.component';
       }),
       DriverRoutingModule
     ],
-    declarations: [ HomeMapComponent, StationDetailComponent, ProfileComponent ]
+    declarations: [ HomeMapComponent, StationDetailComponent, ProfileComponent, ReservationComponent ]
   })
 export class DriverModule { }
