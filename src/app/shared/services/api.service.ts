@@ -6,6 +6,8 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { ChargingStation } from '../models/charging-station';
 import { UserAccountData } from '../models/user-account-data';
+import { User } from '../models/user';
+import { Reservation } from '../models/reservation';
 
 @Injectable({ providedIn: 'root' })
 export class SearchStationsService {
@@ -64,5 +66,21 @@ export class UserAccountInfoService {
         // map(resp => resp.map(
         //   userInfo => ChargingStation.create(station)))
       );
+    }
+  }
+@Injectable({
+  providedIn: 'root'
+})
+export class ReservationService {
+  API_URL = environment.devUrl + 'volt_reservation/reservations/';
+
+  constructor(private http: HttpClient) {}
+
+  public makeReservation(eventCsNk, evNk): Observable<Reservation> {
+    return this.http.post<Reservation>(this.API_URL,
+      {
+        event_cs_nk: eventCsNk,
+        ev_nk: evNk
+      });
   }
 }
