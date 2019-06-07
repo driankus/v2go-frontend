@@ -8,7 +8,7 @@ import { ProfileComponent } from './profile/profile.component';
 const driverRoutes: Routes = [
     { path: '', component: HomeMapComponent },
     { path: 'my-account', component: ProfileComponent },
-    { path: 'reserve', component: ReservationComponent },
+    { path: 'reserve/:nk', component: ReservationComponent },
 ];
 
 @NgModule({
