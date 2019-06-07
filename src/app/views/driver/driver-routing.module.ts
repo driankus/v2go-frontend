@@ -10,7 +10,7 @@ const driverRoutes: Routes = [
       component: HomeMapComponent
     },
     {
-      path: 'reserve',
+      path: 'reserve/:nk',
       component: ReservationComponent
     },
 ];
