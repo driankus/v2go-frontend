@@ -12,7 +12,7 @@ import { ActivatedRoute } from '@angular/router';
 export class ReservationComponent implements OnInit {
 
   eventCss: EventCS[];
-  evNk: string;
+  evNk: string = '55f002a97554ae0a6ffd021311eca1b5';
   csNk: string;
   chargingStation: ChargingStation;
   dataLoaded: Promise<boolean>;
@@ -32,21 +32,22 @@ export class ReservationComponent implements OnInit {
       }
     );
 
-    this.reservationService.getAvailabilities('2019-09-25 12:00:00', '2019-09-28 15:30:00', this.csNk).subscribe(
+    this.reservationService.getAvailabilities('2019-05-05 12:00:00', '2019-05-10 15:30:00', this.csNk).subscribe(
       eventCss => {
         this.eventCss = eventCss;
+        console.log(this.eventCss);
       }
     );
 
     // Get CS info and availability
   }
 
-  // public makeReservation() {
-  //   this.reservationService.makeReservation(this.evNk, this.eventCs.nk)
-  //     .subscribe(() => {
-  //       this.isReserved = true; // TODO replace by toasterNotification
-  //     }, (error) => {
-  //       console.error(error);
-  //     });
-  // }
+  public makeReservation(eventCsNk) {
+    this.reservationService.makeReservation(eventCsNk, this.evNk)
+      .subscribe(() => {
+        this.isReserved = true; // TODO replace by toasterNotification
+      }, (error) => {
+        console.error(error);
+      });
+  }
 }

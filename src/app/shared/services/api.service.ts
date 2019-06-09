@@ -30,11 +30,7 @@ export class SearchStationsService {
       const params = new HttpParams()
         .set('poi_lat', String(poiLat))
         .set('poi_lng', String(poiLng));
-      return this.http.get<ChargingStation[]>(
-        this.API_URL, { params: params }).pipe(
-          map(stationsList => stationsList.map(
-            station => ChargingStation.create(station)
-      )));
+      return this.http.get<ChargingStation[]>(this.API_URL, { params: params });
     }
   }
 }
@@ -74,12 +70,8 @@ export class UserAccountInfoService {
 })
 export class MainService {
   API_URL = environment.devUrl + 'stations/';
-  user: User;
 
-  constructor(private http: HttpClient) {
-    const userData = localStorage.getItem('v2go.user');
-    this.user = User.create(JSON.parse(userData));
-  }
+  constructor(private http: HttpClient) {}
 
   public getChargingStation(csNk: string) {
     return this.http.get<ChargingStation>(this.API_URL + csNk + '/');
@@ -99,12 +91,14 @@ export class ReservationService {
       .set('cs__nk', csNk)
       .set('startDateTime__range', startDateTime)
       .append('startDateTime__range', endDateTime)
-      .set('status', 'AVAILABLE');
 
     return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
   }
 
   public makeReservation(eventCsNk, evNk): Observable<Reservation> {
+    console.log(eventCsNk);
+    console.log(evNk);
+    
     return this.http.post<Reservation>(this.API_URL + 'reservations/',
       {
         event_cs_nk: eventCsNk,
