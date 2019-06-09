@@ -6,6 +6,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { ChargingStation } from '../models/charging-station';
 import { User } from '../models/user';
 import { Reservation } from '../models/reservation';
+import { EventCS } from '../models/event-cs';
 
 @Injectable({
   providedIn: 'root'
@@ -39,8 +40,8 @@ export class SearchStationsService {
 @Injectable({
   providedIn: 'root'
 })
-export class ReservationService {
-  API_URL = this.API_URL + 'volt_reservation/reservations/';
+export class MainService {
+  API_URL = environment.devUrl + 'stations/';
   user: User;
 
   constructor(private http: HttpClient) {
@@ -48,8 +49,35 @@ export class ReservationService {
     this.user = User.create(JSON.parse(userData));
   }
 
+  public getChargingStation(csNk: string) {
+    return this.http.get<ChargingStation>(this.API_URL + csNk + '/');
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReservationService {
+  API_URL = environment.devUrl + 'volt_reservation/';
+  user: User;
+
+  constructor(private http: HttpClient) {
+    const userData = localStorage.getItem('v2go.user');
+    this.user = User.create(JSON.parse(userData));
+  }
+
+  public getAvailabilities(startDateTime, endDateTime, csNk) {
+    const params = new HttpParams()
+      .set('cs__nk', csNk)
+      .set('startDateTime__range', startDateTime)
+      .append('startDateTime__range', endDateTime)
+      .set('status', 'AVAILABLE');
+
+    return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
+  }
+
   public makeReservation(eventCsNk, evNk): Observable<Reservation> {
-    return this.http.post<Reservation>(this.API_URL,
+    return this.http.post<Reservation>(this.API_URL + 'reservations/',
       {
         event_cs_nk: eventCsNk,
         ev_nk: evNk
