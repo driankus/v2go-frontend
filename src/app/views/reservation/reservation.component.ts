@@ -101,13 +101,11 @@ export class ReservationComponent implements OnInit {
   }
 
   public makeReservation(eventCsNk) {
-    this.reservationService.makeReservation(eventCsNk, this.evNk).subscribe(
-      () => {
+    this.reservationService.makeReservation(eventCsNk, this.evNk)
+      .subscribe(() => {
         this.isReserved = true; // TODO replace by toasterNotification
-      },
-      error => {
+      }, (error) => {
         console.error(error);
-      }
-    );
+      });
   }
 }
