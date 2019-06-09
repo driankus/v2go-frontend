@@ -6,9 +6,9 @@
         <div class="card-title">CS info CS_NAME</div>
         <p> {{chargingStation.name}} </p>
         <p> {{chargingStation.address}}</p>
-        <p> charge-level</p>
-        <p> tarif </p>
-        <p> host contact info</p>
+        <p> {{chargingStation.charge_level}}</p>
+        <p> {{chargingStation.tarif_text}} </p>
+        <!-- <p> {{chargingStation.cs_host}}</p> -->
       </div>
     </div>
   </div>
@@ -16,17 +16,10 @@
   <!-- Avail Calendar / Reservation form -->
   <div class="col-lg-9 col-md-6 col-sm-6">
     <div class="card">
-      <div class="card-body">
-        <div class="card-title">Avail Calendar / Reservation Form</div>
-        <form (ngSubmit)="onSubmit()">
-          <div class="form-group">
-            <input type="text" class="form-control" name="targetStarDate">
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" name="targetStarDate">
-          </div>
-          <button type="submit" value="Submit" class="btn btn-primary pd-x-20">Reserve</button>
-        </form>
+      <div class="card-body" *ngFor="let eventCs of eventCss">
+        <div class="card-title">{{eventCs.startDateTime}}-{{eventCs.endDateTime}}</div>
+        <div class="card-body">{{eventCs.status}}</div>
+        <button *ngIf="eventCs.status=='AVAILABLE'"  class="btn btn-outline-primary btn-rounded btn-sm" (click)="makeReservation(eventCs.nk)">Reserve</button>
       </div>
     </div>
   </div>
