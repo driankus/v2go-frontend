@@ -42,10 +42,10 @@ export class CalendarAppEvent implements CalendarEvent {
       primary: data.color && data.color.primary || '#247ba0',
       secondary: data.color && data.color.secondary || '#D1E8FF'
     };
-    this.draggable = data.draggable || true;
+    this.draggable = data.draggable || false;
     this.resizable = {
-      beforeStart: data.resizable && data.resizable.beforeStart || true,
-      afterEnd: data.resizable && data.resizable.afterEnd || true
+      beforeStart: data.resizable && data.resizable.beforeStart || false,
+      afterEnd: data.resizable && data.resizable.afterEnd || false
     };
     this.actions = data.actions || [];
     this.allDay = data.allDay || false;
