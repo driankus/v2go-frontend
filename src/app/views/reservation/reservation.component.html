@@ -1,10 +1,9 @@
 <div class="row">
   <!-- CS Info side-bar -->
-  <div class="col-lg-3 col-md-6 col-sm-6">
-    <div class="card">
-      <div class="card-body" *ngIf="dataLoaded | async">
-        <div class="card-title">CS info CS_NAME</div>
-        <p> {{chargingStation.name}} </p>
+  <div class="col-lg-3 col-md-6 col-sm-6" *ngIf="dataLoaded | async">
+    <div class="card" >
+      <div class="card-body">
+        <div class="card-title" >CS info {{chargingStation.name}}</div>
         <p> {{chargingStation.address}}</p>
         <p> {{chargingStation.charge_level}}</p>
         <p> {{chargingStation.tarif_text}} </p>
@@ -14,14 +13,11 @@
   </div>
 
   <!-- Avail Calendar / Reservation form -->
-  <div class="col-lg-9 col-md-6 col-sm-6">
-    <div class="card">
-      <div class="card-body" *ngFor="let eventCs of eventCss">
-        <div class="card-title">{{eventCs.startDateTime}}-{{eventCs.endDateTime}}</div>
-        <div class="card-body">{{eventCs.status}}</div>
-        <button *ngIf="eventCs.status=='AVAILABLE'"  class="btn btn-outline-primary btn-rounded btn-sm" (click)="makeReservation(eventCs.nk)">Reserve</button>
-      </div>
-    </div>
+  <div class="col-lg-9 col-md-6 col-sm-6" *ngIf="dataLoaded | async">
+    <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+    (eventClicked)="handleEvent('edit', $event.event)" (eventTimesChanged)="eventTimesChanged($event)">
+    </mwl-calendar-week-view>
   </div>
+
 
 </div>
