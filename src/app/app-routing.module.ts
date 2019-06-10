@@ -10,14 +10,13 @@ const adminRoutes: Routes = [
       path: 'dashboard',
       loadChildren: './views/dashboard/dashboard.module#DashboardModule'
     },
+    {
+      path: 'icons',
+      loadChildren: './views/icons/icons.module#IconsModule'
+    }
 ];
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   redirectTo: 'dashboard/v1',
-  //   pathMatch: 'full'
-  // },
   {
     path: '',
     component: AuthLayoutComponent,
@@ -25,7 +24,7 @@ const routes: Routes = [
       {
         path: 'sessions',
         loadChildren: './views/sessions/sessions.module#SessionsModule'
-      }
+      },
     ]
   },
   // Driver Routs
@@ -50,7 +49,6 @@ const routes: Routes = [
   {
     path: '',
     component: AdminLayoutSidebarLargeComponent,
-    // component: DriverLayoutComponent,
     canActivate: [AuthGaurd],
     children: adminRoutes
   },

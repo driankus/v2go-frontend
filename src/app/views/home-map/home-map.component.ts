@@ -111,7 +111,6 @@ export class HomeMapComponent implements OnInit {
    */
   searchStationsNearMe(): void {
     getCurrentPosition.subscribe( position => {
-        console.log('# POSition, ', position);
         this.poiLat = position.coords.latitude;
         this.poiLng = position.coords.longitude;
         // Get stations near User's location
