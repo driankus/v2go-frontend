@@ -59,8 +59,8 @@ export class ReservationComponent implements OnInit {
 
     this.reservationService
       .getAvailabilities(
-        "2019-06-05 12:00:00",
-        "2019-06-10 15:30:00",
+        "2019-06-09 08:00:00",
+        "2019-06-15 20:00:00",
         this.csNk
       )
       .subscribe(eventCss => {
@@ -132,6 +132,7 @@ export class ReservationComponent implements OnInit {
         console.log(res);
         if (dialogAction === "reserve") {
           this.makeReservation(event.meta.notes);
+          this.refresh.next();
         } else if (dialogAction === "delete") {
           this.removeEvent(event);
         }
