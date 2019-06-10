@@ -37,38 +37,43 @@ const getCurrentPosition = new Observable<Position>(observer => {
   styleUrls: ['./home-map.component.scss']
 })
 export class HomeMapComponent implements OnInit {
-  // Form stuff
-  // formSearch: FormGroup;
-
   loading: boolean;
   selectedStation: ChargingStation; // for station detail
   stationsList: ChargingStation[];
-  driver: Marker;
 
   // Map params
+  driver: Marker;
   locationChosen = false;
   poiLat = 45.508048; // Default coordinates is MTL
   poiLng = -73.568025;
   zoom = 13;
+  // Map marker's icons
+  driverIconImage = 'assets/images/map/CarIcon_top_sm.png';
+  driverIcon = {
+      url: this.driverIconImage,
+      scaledSize: {
+          width: 60,
+          height: 30
+      }
+  };
+  poiIconImage = 'assets/images/map/iconPoi.png';
+  poiIcon = {
+      url: this.poiIconImage,
+      scaledSize: {
+          width: 30,
+          height: 40
+      }
+  };
 
   constructor(
-    // private fb: FormBuilder,
     private searchService: SearchStationsService,
     // private toastr: ToastrService
   ) { }
 
   ngOnInit() {
     this.searchStationsNearMe();
-    // this.buildFormSearch();
   }
-  /**
-   *  FORM STUFF
-   */
-  // buildFormSearch() {
-  //   this.formSearch = this.fb.group({
-  //     experience: []
-  //   });
-  // }
+
   onSubmit() {
     this.loading = true;
     setTimeout(() => {
@@ -90,7 +95,6 @@ export class HomeMapComponent implements OnInit {
         console.log('#'.repeat(100), ' #stationsList !!!: ', stationsList);
       });
   }
-
   /**
    * Event handler displays a marker on the map where click-ed
    *
@@ -108,15 +112,28 @@ export class HomeMapComponent implements OnInit {
    */
   searchStationsNearMe(): void {
     getCurrentPosition.subscribe( position => {
+        console.log('# POSition, ', position);
         this.poiLat = position.coords.latitude;
         this.poiLng = position.coords.longitude;
         // Get stations near User's location
         this.findStations(this.poiLat, this.poiLng);
+        this.displayUser(position);
       }, error => {
         console.log('# ERROR at searchStationsNearMe(). Message: ', error);
         // Get stations near default MTL coords
         this.findStations(this.poiLat, this.poiLng);
     });
+  }
+  /**
+   *  Method to create a marker and display user locaiton on map
+   */
+  displayUser(position) {
+    this.driver = new Marker(
+      position.coords.latitude,
+      position.coords.longitude,
+      'D',
+      this.driverIcon
+    );
   }
 }
 
