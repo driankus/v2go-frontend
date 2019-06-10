@@ -90,7 +90,7 @@ export class ReservationService {
     const params = new HttpParams()
       .set('cs__nk', csNk)
       .set('startDateTime__range', startDateTime)
-      .append('startDateTime__range', endDateTime)
+      .append('startDateTime__range', endDateTime);
 
     return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
   }
