@@ -135,6 +135,7 @@ export class ReservationComponent implements OnInit {
         console.log(res);
         if (dialogAction === "reserve") {
           this.makeReservation(event.meta.notes);
+          this.refresh.next();
         } else if (dialogAction === "delete") {
           this.removeEvent(event);
         }
