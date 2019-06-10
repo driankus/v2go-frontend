@@ -4,6 +4,9 @@ import { environment } from './../../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import { ChargingStation } from '../models/charging-station';
+import { User } from '../models/user';
+import { Reservation } from '../models/reservation';
+import { EventCS } from '../models/event-cs';
 
 @Injectable({
   providedIn: 'root'
@@ -27,9 +30,57 @@ export class SearchStationsService {
       const params = new HttpParams()
         .set('poi_lat', String(poiLat))
         .set('poi_lng', String(poiLng));
-      return this.http.get<ChargingStation[]>(this.API_URL, { params: params }).pipe(
-        map(stationsList => stationsList.map(station => ChargingStation.create(station)))
-      );
+      return this.http.get<ChargingStation[]>(this.API_URL, { params: params });
     }
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class MainService {
+  API_URL = environment.devUrl + 'stations/';
+  user: User;
+
+  constructor(private http: HttpClient) {
+    const userData = localStorage.getItem('v2go.user');
+    this.user = User.create(JSON.parse(userData));
+  }
+
+  public getChargingStation(csNk: string) {
+    return this.http.get<ChargingStation>(this.API_URL + csNk + '/');
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReservationService {
+  API_URL = environment.devUrl + 'volt_reservation/';
+  user: User;
+
+  constructor(private http: HttpClient) {
+    const userData = localStorage.getItem('v2go.user');
+    this.user = User.create(JSON.parse(userData));
+  }
+
+  public getAvailabilities(startDateTime, endDateTime, csNk) {
+    const params = new HttpParams()
+      .set('cs__nk', csNk)
+      .set('startDateTime__range', startDateTime)
+      .append('startDateTime__range', endDateTime);
+
+    return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
+  }
+
+  public makeReservation(eventCsNk, evNk): Observable<Reservation> {
+    console.log(eventCsNk);
+    console.log(evNk);
+    
+    return this.http.post<Reservation>(this.API_URL + 'reservations/',
+      {
+        event_cs_nk: eventCsNk,
+        ev_nk: evNk
+      });
   }
 }

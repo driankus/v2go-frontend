@@ -12,10 +12,11 @@
       <div class="flex-grow-1">
           <h6 class="m-0">CS {{station.name}}</h6>
           <p class="m-0 text-small text-muted">{{station.address}}</p>
-          <hr>
-          <div>
-            <button class="btn btn-outline-primary btn-rounded btn-sm">See availability Calendar</button>
-          </div>
+        <div>
+          <button class="btn btn-outline-primary btn-rounded btn-sm"
+          [routerLink]="['../driver/reserve', station.nk]">See availability Calendar</button>
+          
+        </div>
       </div>
     </div>
   </div>
