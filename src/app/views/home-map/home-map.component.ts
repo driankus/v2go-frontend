@@ -105,7 +105,6 @@ export class HomeMapComponent implements OnInit {
     this.poiLng = event.coords.lng;
     this.locationChosen = true;
   }
-
   /**
    * Method get stations near User's location (navigator, if not avail, use MTL coords)
    * then, displays user ans CS on map.
