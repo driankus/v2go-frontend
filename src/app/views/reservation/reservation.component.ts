@@ -52,6 +52,7 @@ export class ReservationComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.events = [];
     this.mainService
       .getChargingStation(this.csNk)
       .subscribe(chargingStation => {
@@ -72,11 +73,11 @@ export class ReservationComponent implements OnInit {
 
         eventCss.forEach(event => {
           console.log(event.startDateTime);
-          let colors = {
+          const colors = {
             'AVAILABLE': '#6B8E23',
             'RESERVED': '#CD5C5C'
           }
-          let calEvent = new CalendarAppEvent({
+          const calEvent = new CalendarAppEvent({
             'start': new Date(event.startDateTime),
             'end': new Date(event.endDateTime),
             'title': event.status,
@@ -111,6 +112,8 @@ export class ReservationComponent implements OnInit {
     this.reservationService.makeReservation(eventCsNk, this.evNk).subscribe(
       () => {
         this.isReserved = true; // TODO replace by toasterNotification
+        this.ngOnInit();
+        this.refresh.next();
       },
       error => {
         console.error(error);
