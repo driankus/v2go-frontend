@@ -39,6 +39,7 @@ export class ReservationComponent implements OnInit {
   public refresh: Subject<any> = new Subject();
   public events: CalendarAppEvent[] = [];
   private actions: CalendarEventAction[];
+  private startWeekOn = new Date().getDay();
 
   constructor(
     private reservationService: ReservationService,
@@ -57,10 +58,12 @@ export class ReservationComponent implements OnInit {
         this.chargingStation = chargingStation;
       });
 
+      const today = new Date();
+
     this.reservationService
       .getAvailabilities(
-        "2019-06-09 08:00:00",
-        "2019-06-15 20:00:00",
+        new Date(today.getFullYear(), today.getMonth(), 8).toISOString().replace('T', ' ').split('.000Z')[0],
+        new Date(today.getFullYear(), today.getMonth(), 20).toISOString().replace('T', ' ').split('.000Z')[0],
         this.csNk
       )
       .subscribe(eventCss => {
@@ -69,10 +72,17 @@ export class ReservationComponent implements OnInit {
 
         eventCss.forEach(event => {
           console.log(event.startDateTime);
+          let colors = {
+            'AVAILABLE': '#6B8E23',
+            'RESERVED': '#CD5C5C'
+          }
           let calEvent = new CalendarAppEvent({
             'start': new Date(event.startDateTime),
             'end': new Date(event.endDateTime),
             'title': event.status,
+            'color': {
+              'secondary': colors[event.status]
+            },
             'actions': [{
               label: '<i class="i-Edit m-1 text-secondary"></i>',
               onClick: ({ event }: { event: CalendarEvent }): void => {

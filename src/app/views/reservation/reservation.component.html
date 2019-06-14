@@ -23,7 +23,7 @@
   <div class="col-lg-9 col-md-6 col-sm-6" *ngIf="dataLoaded | async">
     <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
     (eventClicked)="handleEvent('edit', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
-    [dayStartHour]="8" [dayEndHour]="20">
+    [dayStartHour]="8" [dayEndHour]="20" [weekStartsOn]="startWeekOn">
     </mwl-calendar-week-view>
   </div>
 
