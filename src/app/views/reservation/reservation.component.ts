@@ -69,6 +69,8 @@ export class ReservationComponent implements OnInit {
         this.chargingStation = chargingStation;
       });
 
+      const today = new Date();
+
     this.reservationService
       .getAvailabilities(
         this.convertDateToAPIFormat(this.getTodayStartingAt8Am()),
