@@ -8,10 +8,7 @@
       <div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
     </div>
   </div>
-
-  <hr>
-  <pre>Selected time: {{ctrl.value | json}}</pre>
-
+  
   <div class="form-group">
     <ngb-timepicker [formControl]="nextCtrl" required></ngb-timepicker>
     <div *ngIf="nextCtrl.valid" class="small form-text text-success">Great choice</div>
@@ -23,10 +20,7 @@
     </div>
   </div>
 
-  <hr>
-  <pre>Selected time: {{nextCtrl.value | json}}</pre>
-
   <div class="modal-footer">
-    <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded" (click)="activeModal.close({action: 'reserve', event: eventForm.value, startTime: ctrl.value, endTime: nextCtrl.value})">Save</button>
+    <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded" (click)="activeModal.close({action: 'reserve', event: eventForm.value, startTime: ctrl.value, endTime: nextCtrl.value})">Reserve</button>
   </div>
 </div>
