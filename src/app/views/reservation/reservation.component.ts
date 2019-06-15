@@ -51,6 +51,10 @@ export class ReservationComponent implements OnInit {
     this.route.params.subscribe(params => (this.csNk = params.nk));
   }
 
+  toProperString(date: Date) {
+    return date.toISOString().split('T')[0] + ' ' + date.toLocaleTimeString();
+  }
+
   ngOnInit() {
     this.events = [];
     this.mainService
@@ -63,22 +67,14 @@ export class ReservationComponent implements OnInit {
 
     this.reservationService
       .getAvailabilities(
-        new Date(today.getFullYear(), today.getMonth(), 8)
-          .toISOString()
-          .replace("T", " ")
-          .split(".000Z")[0],
-        new Date(today.getFullYear(), today.getMonth(), 20)
-          .toISOString()
-          .replace("T", " ")
-          .split(".000Z")[0],
+        this.toProperString(new Date(today.getFullYear(), today.getMonth(), 8)),
+        this.toProperString(new Date(today.getFullYear(), today.getMonth(), 20)),
         this.csNk
       )
       .subscribe(eventCss => {
         this.eventCss = eventCss;
-        console.log(this.eventCss);
 
         eventCss.forEach(event => {
-          console.log(event.startDateTime);
           const colors = {
             AVAILABLE: "#6B8E23",
             RESERVED: "#CD5C5C"
@@ -117,8 +113,10 @@ export class ReservationComponent implements OnInit {
     // Get CS info and availability
   }
 
-  public makeReservation(eventCsNk) {
-    this.reservationService.makeReservation(eventCsNk, this.evNk).subscribe(
+  public makeReservation(eventCsNk, startDateTime=null, endDateTime=null) {
+    startDateTime = startDateTime == null ? startDateTime : this.toProperString(startDateTime);
+    endDateTime = endDateTime == null ? endDateTime : this.toProperString(endDateTime);
+    this.reservationService.makeReservation(eventCsNk, this.evNk, startDateTime, endDateTime).subscribe(
       () => {
         this.isReserved = true; // TODO replace by toasterNotification
         this.ngOnInit();
@@ -143,14 +141,6 @@ export class ReservationComponent implements OnInit {
         centered: true
       });
       dialogRef.componentInstance.data = { event, action };
-      dialogRef.componentInstance.startTime = {
-        hour: event.start.getHours(),
-        minute: event.start.getMinutes()
-      };
-      dialogRef.componentInstance.endTime = {
-        hour: event.end.getHours(),
-        minute: event.end.getMinutes()
-      };
       dialogRef.result
         .then(res => {
           if (!res) {
@@ -158,8 +148,23 @@ export class ReservationComponent implements OnInit {
           }
           const dialogAction = res.action;
           const responseEvent = res.event;
-          if (dialogAction === "reserve") {
-            this.makeReservation(event.meta.notes);
+          const startDateTime = new Date(
+            event.start.getFullYear(),
+            event.start.getMonth(),
+            event.start.getDate(),
+            res.startTime.hour,
+            res.startTime.minute
+          );
+          const endDateTime = new Date(
+            event.end.getFullYear(),
+            event.end.getMonth(),
+            event.end.getDate(),
+            res.endTime.hour,
+            res.endTime.minute
+          );
+
+          if (dialogAction === 'reserve') {
+            this.makeReservation(event.meta.notes, startDateTime, endDateTime);
             this.refresh.next();
           } else if (dialogAction === "delete") {
             this.removeEvent(event);
