@@ -29,7 +29,7 @@ export class CalendarFormDialogComponent implements OnInit {
       return null;
     }
 
-    if (value.hour < this.event.start.getHours() && value.minute < this.event.start.getMinutes()) {
+    if (value.hour < this.event.start.getHours() || (value.hour === this.event.start.getHours() && value.minute < this.event.start.getMinutes())) {
       return {tooEarly: true};
     }
     if (value.hour > this.event.end.getHours() && value.minute > this.event.end.getMinutes()) {
@@ -53,7 +53,7 @@ export class CalendarFormDialogComponent implements OnInit {
     if (value.hour < this.event.start.getHours() && value.minute < this.event.start.getMinutes()) {
       return {tooEarly: true};
     }
-    if (value.hour > this.event.end.getHours() && value.minute > this.event.end.getMinutes()) {
+    if (value.hour > this.event.end.getHours() || (value.hour === this.event.end.getHours() && value.minute > this.event.end.getMinutes())) {
       return {tooLate: true};
     }
 
@@ -73,7 +73,7 @@ export class CalendarFormDialogComponent implements OnInit {
         this.dialogTitle = 'Add Event';
         this.event = new CalendarAppEvent(this.data.event);
         this.ctrl.setValue({'hour': this.event.start.getHours(), 'minute': this.event.start.getMinutes()});
-        this.nextCtrl.setValue({'hour': this.event.end.getHours(), 'minute': this.event.end.getMinutes()})
+        this.nextCtrl.setValue({'hour': this.event.end.getHours(), 'minute': this.event.end.getMinutes()});
       }
       this.eventForm = this.buildEventForm(this.event);
 
