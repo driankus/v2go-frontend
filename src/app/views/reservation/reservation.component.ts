@@ -52,7 +52,7 @@ export class ReservationComponent implements OnInit {
   }
 
   toProperString(date: Date) {
-    return date.toISOString().split('T')[0] + ' ' + date.toLocaleTimeString();
+    return date.toISOString().split("T")[0] + " " + date.toLocaleTimeString();
   }
 
   ngOnInit() {
@@ -68,7 +68,9 @@ export class ReservationComponent implements OnInit {
     this.reservationService
       .getAvailabilities(
         this.toProperString(new Date(today.getFullYear(), today.getMonth(), 8)),
-        this.toProperString(new Date(today.getFullYear(), today.getMonth(), 20)),
+        this.toProperString(
+          new Date(today.getFullYear(), today.getMonth(), 20)
+        ),
         this.csNk
       )
       .subscribe(eventCss => {
@@ -113,19 +115,25 @@ export class ReservationComponent implements OnInit {
     // Get CS info and availability
   }
 
-  public makeReservation(eventCsNk, startDateTime=null, endDateTime=null) {
-    startDateTime = startDateTime == null ? startDateTime : this.toProperString(startDateTime);
-    endDateTime = endDateTime == null ? endDateTime : this.toProperString(endDateTime);
-    this.reservationService.makeReservation(eventCsNk, this.evNk, startDateTime, endDateTime).subscribe(
-      () => {
-        this.isReserved = true; // TODO replace by toasterNotification
-        this.ngOnInit();
-        this.refresh.next();
-      },
-      error => {
-        console.error(error);
-      }
-    );
+  public makeReservation(eventCsNk, startDateTime = null, endDateTime = null) {
+    startDateTime =
+      startDateTime == null
+        ? startDateTime
+        : this.toProperString(startDateTime);
+    endDateTime =
+      endDateTime == null ? endDateTime : this.toProperString(endDateTime);
+    this.reservationService
+      .makeReservation(eventCsNk, this.evNk, startDateTime, endDateTime)
+      .subscribe(
+        () => {
+          this.isReserved = true; // TODO replace by toasterNotification
+          this.ngOnInit();
+          this.refresh.next();
+        },
+        error => {
+          console.error(error);
+        }
+      );
   }
 
   private initEvents(events): CalendarAppEvent[] {
@@ -163,8 +171,14 @@ export class ReservationComponent implements OnInit {
             res.endTime.minute
           );
 
-          if (dialogAction === 'reserve') {
-            this.makeReservation(event.meta.notes, event.start.getTime() === startDateTime.getTime() ? null : startDateTime, event.end.getTime() === endDateTime.getTime() ? null : endDateTime);
+          if (dialogAction === "reserve") {
+            this.makeReservation(
+              event.meta.notes,
+              event.start.getTime() === startDateTime.getTime()
+                ? null
+                : startDateTime,
+              event.end.getTime() === endDateTime.getTime() ? null : endDateTime
+            );
             this.refresh.next();
           } else if (dialogAction === "delete") {
             this.removeEvent(event);
