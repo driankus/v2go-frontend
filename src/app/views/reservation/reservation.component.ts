@@ -133,6 +133,8 @@ export class ReservationComponent implements OnInit {
       centered: true
     });
     dialogRef.componentInstance.data = { event, action };
+    dialogRef.componentInstance.startTime = {hour: event.start.getHours(), minute: event.start.getMinutes()};
+    dialogRef.componentInstance.endTime = {hour: event.end.getHours(), minute: event.end.getMinutes()}
     dialogRef.result
       .then(res => {
         if (!res) {
@@ -140,9 +142,6 @@ export class ReservationComponent implements OnInit {
         }
         const dialogAction = res.action;
         const responseEvent = res.event;
-        responseEvent.start = Utils.ngbDateToDate(responseEvent.start);
-        responseEvent.end = Utils.ngbDateToDate(responseEvent.end);
-        console.log(res);
         if (dialogAction === "reserve") {
           this.makeReservation(event.meta.notes);
           this.refresh.next();
