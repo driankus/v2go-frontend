@@ -9,6 +9,7 @@ interface DialogData {
   event?: CalendarEvent;
   action?: string;
   date?: Date;
+  test?: string;
 }
 @Component({
   selector: 'app-calendar-form-dialog',

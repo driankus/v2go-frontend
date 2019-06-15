@@ -1,17 +1,18 @@
-<div class="form-group">
-  <ngb-timepicker [formControl]="ctrl" required></ngb-timepicker>
-  <div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
-  <div class="small form-text text-danger" *ngIf="!ctrl.valid">
-    <div *ngIf="ctrl.errors['required']">Select some time during lunchtime</div>
-    <div *ngIf="ctrl.errors['tooLate']">Oh no, it's way too late</div>
-    <div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
+<div>
+  <div class="form-group">
+    <ngb-timepicker [formControl]="ctrl" required></ngb-timepicker>
+    <div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
+    <div class="small form-text text-danger" *ngIf="!ctrl.valid">
+      <div *ngIf="ctrl.errors['required']">Select some time during lunchtime</div>
+      <div *ngIf="ctrl.errors['tooLate']">Oh no, it's way too late</div>
+      <div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
+    </div>
   </div>
-</div>
 
-<hr>
-<pre>Selected time: {{ctrl.value | json}}</pre>
+  <hr>
+  <pre>Selected time: {{ctrl.value | json}}</pre>
 
-<div class="form-group">
+  <div class="form-group">
     <ngb-timepicker [formControl]="nextCtrl" required></ngb-timepicker>
     <div *ngIf="nextCtrl.valid" class="small form-text text-success">Great choice</div>
     <div class="small form-text text-danger" *ngIf="!nextCtrl.valid">
@@ -21,6 +22,11 @@
       <div *ngIf="nextCtrl.errors['invalid']">End Date cannot be before start date</div>
     </div>
   </div>
-  
+
   <hr>
   <pre>Selected time: {{nextCtrl.value | json}}</pre>
+
+  <div class="modal-footer">
+    <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded" (click)="activeModal.close({action: 'reserve', event: eventForm.value, startTime: ctrl.value, endTime: nextCtrl.value})">Save</button>
+  </div>
+</div>
