@@ -59,12 +59,18 @@ export class ReservationComponent implements OnInit {
         this.chargingStation = chargingStation;
       });
 
-      const today = new Date();
+    const today = new Date();
 
     this.reservationService
       .getAvailabilities(
-        new Date(today.getFullYear(), today.getMonth(), 8).toISOString().replace('T', ' ').split('.000Z')[0],
-        new Date(today.getFullYear(), today.getMonth(), 20).toISOString().replace('T', ' ').split('.000Z')[0],
+        new Date(today.getFullYear(), today.getMonth(), 8)
+          .toISOString()
+          .replace("T", " ")
+          .split(".000Z")[0],
+        new Date(today.getFullYear(), today.getMonth(), 20)
+          .toISOString()
+          .replace("T", " ")
+          .split(".000Z")[0],
         this.csNk
       )
       .subscribe(eventCss => {
@@ -74,30 +80,33 @@ export class ReservationComponent implements OnInit {
         eventCss.forEach(event => {
           console.log(event.startDateTime);
           const colors = {
-            'AVAILABLE': '#6B8E23',
-            'RESERVED': '#CD5C5C'
-          }
+            AVAILABLE: "#6B8E23",
+            RESERVED: "#CD5C5C"
+          };
           const calEvent = new CalendarAppEvent({
-            'start': new Date(event.startDateTime),
-            'end': new Date(event.endDateTime),
-            'title': event.status,
-            'color': {
-              'secondary': colors[event.status]
+            start: new Date(event.startDateTime),
+            end: new Date(event.endDateTime),
+            title: event.status,
+            color: {
+              secondary: colors[event.status]
             },
-            'actions': [{
-              label: '<i class="i-Edit m-1 text-secondary"></i>',
-              onClick: ({ event }: { event: CalendarEvent }): void => {
-                this.handleEvent('edit', event);
+            actions: [
+              {
+                label: '<i class="i-Edit m-1 text-secondary"></i>',
+                onClick: ({ event }: { event: CalendarEvent }): void => {
+                  this.handleEvent("edit", event);
+                }
+              },
+              {
+                label: '<i class="i-Close m-1 text-danger"></i>',
+                onClick: ({ event }: { event: CalendarEvent }): void => {
+                  this.removeEvent(event);
+                }
               }
-            }, {
-              label: '<i class="i-Close m-1 text-danger"></i>',
-              onClick: ({ event }: { event: CalendarEvent }): void => {
-                this.removeEvent(event);
-              }
-            }],
-            'draggable': false,
-            'meta': {
-              'notes': event.nk
+            ],
+            draggable: false,
+            meta: {
+              notes: event.nk
             }
           });
           this.events.push(calEvent);
@@ -129,29 +138,37 @@ export class ReservationComponent implements OnInit {
   }
 
   public handleEvent(action: string, event: CalendarAppEvent): void {
-    const dialogRef = this.modalService.open(CalendarFormDialogComponent, {
-      centered: true
-    });
-    dialogRef.componentInstance.data = { event, action };
-    dialogRef.componentInstance.startTime = {hour: event.start.getHours(), minute: event.start.getMinutes()};
-    dialogRef.componentInstance.endTime = {hour: event.end.getHours(), minute: event.end.getMinutes()}
-    dialogRef.result
-      .then(res => {
-        if (!res) {
-          return;
-        }
-        const dialogAction = res.action;
-        const responseEvent = res.event;
-        if (dialogAction === "reserve") {
-          this.makeReservation(event.meta.notes);
-          this.refresh.next();
-        } else if (dialogAction === "delete") {
-          this.removeEvent(event);
-        }
-      })
-      .catch(e => {
-        console.log(e);
+    if (event.title !== "RESERVED") {
+      const dialogRef = this.modalService.open(CalendarFormDialogComponent, {
+        centered: true
       });
+      dialogRef.componentInstance.data = { event, action };
+      dialogRef.componentInstance.startTime = {
+        hour: event.start.getHours(),
+        minute: event.start.getMinutes()
+      };
+      dialogRef.componentInstance.endTime = {
+        hour: event.end.getHours(),
+        minute: event.end.getMinutes()
+      };
+      dialogRef.result
+        .then(res => {
+          if (!res) {
+            return;
+          }
+          const dialogAction = res.action;
+          const responseEvent = res.event;
+          if (dialogAction === "reserve") {
+            this.makeReservation(event.meta.notes);
+            this.refresh.next();
+          } else if (dialogAction === "delete") {
+            this.removeEvent(event);
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 
   public eventTimesChanged({
