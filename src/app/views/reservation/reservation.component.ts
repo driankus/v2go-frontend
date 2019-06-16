@@ -17,6 +17,7 @@ import { CalendarAppService } from "../calendar/calendar-app.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { CalendarFormDialogComponent } from "../calendar/calendar-form-dialog/calendar-form-dialog.component";
 import { Utils } from "src/app/shared/utils";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
   selector: "app-reservation",
@@ -46,7 +47,8 @@ export class ReservationComponent implements OnInit {
     private route: ActivatedRoute,
     private mainService: MainService,
     private calendarService: CalendarAppService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private toastr: ToastrService
   ) {
     this.route.params.subscribe(params => (this.csNk = params.nk));
   }
@@ -129,6 +131,7 @@ export class ReservationComponent implements OnInit {
           this.isReserved = true; // TODO replace by toasterNotification
           this.ngOnInit();
           this.refresh.next();
+          this.toastr.success('Reservation made', 'Success!', {progressBar: true});
         },
         error => {
           console.error(error);
