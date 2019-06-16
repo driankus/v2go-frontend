@@ -32,20 +32,15 @@ export class ReservationComponent implements OnInit {
 
   isReserved = false;
 
-  public view = "month";
   public viewDate = new Date();
-  @ViewChild("eventDeleteConfirm") eventDeleteConfirm;
   public activeDayIsOpen = true;
   public refresh: Subject<any> = new Subject();
   public events: CalendarAppEvent[] = [];
-  private actions: CalendarEventAction[];
-  private startWeekOn = new Date().getDay();
 
   constructor(
     private reservationService: ReservationService,
     private route: ActivatedRoute,
     private mainService: MainService,
-    private calendarService: CalendarAppService,
     private modalService: NgbModal,
     private toastr: ToastrService
   ) {
@@ -95,12 +90,6 @@ export class ReservationComponent implements OnInit {
                 onClick: ({ event }: { event: CalendarEvent }): void => {
                   this.handleEvent("edit", event);
                 }
-              },
-              {
-                label: '<i class="i-Close m-1 text-danger"></i>',
-                onClick: ({ event }: { event: CalendarEvent }): void => {
-                  this.removeEvent(event);
-                }
               }
             ],
             draggable: false,
@@ -138,13 +127,6 @@ export class ReservationComponent implements OnInit {
       );
   }
 
-  private initEvents(events): CalendarAppEvent[] {
-    return events.map(event => {
-      event.actions = this.actions;
-      return new CalendarAppEvent(event);
-    });
-  }
-
   public handleEvent(action: string, event: CalendarAppEvent): void {
     if (event.title !== "RESERVED") {
       const dialogRef = this.modalService.open(CalendarFormDialogComponent, {
@@ -180,44 +162,11 @@ export class ReservationComponent implements OnInit {
               this.makeReservation(event.meta.notes, startDateTime, endDateTime);
             }
             this.refresh.next();
-          } else if (dialogAction === "delete") {
-            this.removeEvent(event);
           }
         })
         .catch(e => {
           console.log(e);
         });
     }
-  }
-
-  public eventTimesChanged({
-    event,
-    newStart,
-    newEnd
-  }: CalendarEventTimesChangedEvent): void {
-    event.start = newStart;
-    event.end = newEnd;
-
-    this.calendarService.updateEvent(event).subscribe(events => {
-      this.events = this.initEvents(events);
-      this.refresh.next();
-    });
-  }
-
-  public removeEvent(event) {
-    this.modalService
-      .open(this.eventDeleteConfirm, {
-        ariaLabelledBy: "modal-basic-title",
-        centered: true
-      })
-      .result.then(
-        result => {
-          this.calendarService.deleteEvent(event._id).subscribe(events => {
-            this.events = this.initEvents(events);
-            this.refresh.next();
-          });
-        },
-        reason => {}
-      );
   }
 }
