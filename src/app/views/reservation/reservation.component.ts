@@ -1,10 +1,7 @@
 import { Component, OnInit, Input, ViewChild } from "@angular/core";
 import { ChargingStation } from "../../shared/models/charging-station";
 import { EventCS } from "../../shared/models/event-cs";
-import {
-  ReservationService,
-  MainService
-} from "../../shared/services/api.service";
+import { ReservationService, MainService} from "../../shared/services/api.service";
 import { ActivatedRoute } from "@angular/router";
 import { Subject } from "rxjs";
 import { CalendarAppEvent } from "src/app/shared/models/calendar-event.model";
@@ -119,7 +116,9 @@ export class ReservationComponent implements OnInit {
           this.isReserved = true; // TODO replace by toasterNotification
           this.ngOnInit();
           this.refresh.next();
-          this.toastr.success('Reservation made', 'Success!', {progressBar: true});
+          this.toastr.success("Reservation made", "Success!", {
+            progressBar: true
+          });
         },
         error => {
           console.error(error);
@@ -156,10 +155,20 @@ export class ReservationComponent implements OnInit {
           );
 
           if (dialogAction === "reserve") {
-            if (event.start.getTime() === startDateTime.getTime() && event.end.getTime() === endDateTime.getTime()) {
+            if (
+              event.start.getTime() === startDateTime.getTime() &&
+              event.end.getTime() === endDateTime.getTime()
+            ) {
               this.makeReservation(event.meta.notes);
-            } else if (event.start.getTime() === startDateTime.getTime() || event.end.getTime() === endDateTime.getTime()) {
-              this.makeReservation(event.meta.notes, startDateTime, endDateTime);
+            } else if (
+              event.start.getTime() === startDateTime.getTime() ||
+              event.end.getTime() === endDateTime.getTime()
+            ) {
+              this.makeReservation(
+                event.meta.notes,
+                startDateTime,
+                endDateTime
+              );
             }
             this.refresh.next();
           }
