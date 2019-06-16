@@ -22,6 +22,15 @@
     </div>
   </div>
 
+  <div class="col-md-6 form-group">
+    <h1>Charge Time</h1>
+  </div>
+
+  <hr>
+  <pre>Selected time: {{nextCtrl.value.hour - ctrl.value.hour}} hour(s)
+                      {{((nextCtrl.value.hour - ctrl.value.hour)* 60 + nextCtrl.value.minute - ctrl.value.minute) % 60}} minute(s)
+  </pre>
+
   <div class="modal-footer">
     <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded"
       (click)="activeModal.close({action: 'reserve', event: eventForm.value, startTime: ctrl.value, endTime: nextCtrl.value})">Reserve</button>
