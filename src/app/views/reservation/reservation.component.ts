@@ -16,7 +16,6 @@ import {
 import { CalendarAppService } from "../calendar/calendar-app.service";
 import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
 import { CalendarFormDialogComponent } from "../calendar/calendar-form-dialog/calendar-form-dialog.component";
-import { Utils } from "src/app/shared/utils";
 import { ToastrService } from "ngx-toastr";
 
 @Component({
@@ -175,13 +174,11 @@ export class ReservationComponent implements OnInit {
           );
 
           if (dialogAction === "reserve") {
-            this.makeReservation(
-              event.meta.notes,
-              event.start.getTime() === startDateTime.getTime()
-                ? null
-                : startDateTime,
-              event.end.getTime() === endDateTime.getTime() ? null : endDateTime
-            );
+            if (event.start.getTime() === startDateTime.getTime() && event.end.getTime() === endDateTime.getTime()) {
+              this.makeReservation(event.meta.notes);
+            } else if (event.start.getTime() === startDateTime.getTime() || event.end.getTime() === endDateTime.getTime()) {
+              this.makeReservation(event.meta.notes, startDateTime, endDateTime);
+            }
             this.refresh.next();
           } else if (dialogAction === "delete") {
             this.removeEvent(event);
