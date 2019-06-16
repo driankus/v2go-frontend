@@ -9,7 +9,6 @@ interface DialogData {
   event?: CalendarEvent;
   action?: string;
   date?: Date;
-  test?: string;
 }
 @Component({
   selector: 'app-calendar-form-dialog',
@@ -22,6 +21,7 @@ export class CalendarFormDialogComponent implements OnInit {
   dialogTitle: string;
   eventForm: FormGroup;
   action: string;
+
 
   ctrl = new FormControl('', (control: FormControl) => {
     const value = control.value;
