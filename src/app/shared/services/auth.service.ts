@@ -24,13 +24,16 @@ export class AuthService {
   user = new BehaviorSubject<User>(null);
   private tokenExpirationTimer: any;
 
+  // TODO remove this
+  authenticated = true;
+
   constructor(private http: HttpClient, private router: Router) {}
 
-  signup(email: string, password: string) {
+  signup(username: string, password: string) {
     return this.http
       .post<AuthResponseData>(this.API_URL + 'auth',
         {
-          email: email,
+          username: username,
           password: password,
           returnSecureToken: true
         }
@@ -86,5 +89,23 @@ export class AuthService {
         break;
     }
     return throwError(errorMessage);
+  }
+
+  // REMOVE this
+  checkAuth() {
+    // this.authenticated = this.store.getItem("demo_login_status");
+  }
+
+  getuser() {
+    console.log('REMOVE THIS');
+    this.authenticated = true;
+  }
+
+  signin(credentials) {
+    console.log('REMOVE THIS', credentials);
+  }
+  signout() {
+    console.log('REMOVE THIS');
+    this.authenticated = false;
   }
 }
