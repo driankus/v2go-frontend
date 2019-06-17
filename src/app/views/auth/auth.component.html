@@ -1,49 +1,75 @@
-<div class="row">
-  <div class="col-xs-12 col-md-6 col-md-offset-3">
-    <div class="alert alert-danger" *ngIf="error">
-      <p>{{ error }}</p>
-    </div>
-    <div *ngIf="isLoading" style="text-align: center;">
-      <app-loading-spinner></app-loading-spinner>
-    </div>
-    <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
-      <div class="form-group">
-        <label for="username">User name</label>
-        <input
-          type="username"
-          id="username"
-          class="form-control"
-          ngModel
-          name="username"
-          required
-          username
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          class="form-control"
-          ngModel
-          name="password"
-          required
-          minlength="6"
-        />
-      </div>
-      <div>
-        <button
-          class="btn btn-primary"
-          type="submit"
-          [disabled]="!authForm.valid"
-        >
+<div class="card o-hidden" [@animate]="{value:'*',params:{y:'120px',opacity:'0',delay:'100ms', duration: '400ms'}}">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="p-4">
+        <div class="auth-logo text-center mb-4">
+          <img src="assets/images/logo.png" alt="">
+        </div>
+        <h1 class="mb-3 text-18">
           {{ isLoginMode ? 'Login' : 'Sign Up' }}
+        </h1>
+        <div class="alert alert-danger" *ngIf="error">
+          <p>{{ error }}</p>
+        </div>
+        <div *ngIf="isLoading" style="text-align: center;">
+          <p> app-loading-spinner comes here</p>
+        </div>
+        <form #authForm="ngForm" (ngSubmit)="onSubmit(authForm)" *ngIf="!isLoading">
+          <div class="form-group">
+            <label for="username">User name</label>
+            <input
+              type="username"
+              id="username"
+              class="form-control"
+              ngModel
+              name="username"
+              required
+              username
+            />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input
+              type="password"
+              id="password"
+              class="form-control"
+              ngModel
+              name="password"
+              required
+              minlength="6"
+            />
+          </div>
+          <div>
+            <button
+              class="btn btn-primary"
+              type="submit"
+              [disabled]="!authForm.valid"
+            >
+              {{ isLoginMode ? 'Login' : 'Sign Up' }}
+            </button>
+            - | -
+            <button class="btn btn-primary" (click)="onSwitchMode()" type="button">
+              Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <!-- <div class="col-md-6 text-center " style="background-size: cover;">
+      <div class="pr-3 auth-right">
+        <button class="btn btn-rounded btn-outline-primary btn-outline-email btn-block btn-icon-text" routerLink="/sessions/signup">
+          <i class="i-Mail-with-At-Sign"></i>
+          Sign up with Email
         </button>
-        |
-        <button class="btn btn-primary" (click)="onSwitchMode()" type="button">
-          Switch to {{ isLoginMode ? 'Sign Up' : 'Login' }}
+        <button class="btn btn-rounded btn-outline-primary btn-outline-google btn-block btn-icon-text">
+          <i class="i-Google-Plus"></i>
+          Sign up with Google
+        </button>
+        <button class="btn btn-rounded btn-outline-primary btn-block btn-icon-text btn-outline-facebook">
+          <i class="i-Facebook-2"></i>
+          Sign up with Facebook
         </button>
       </div>
-    </form>
+    </div> -->
   </div>
 </div>
