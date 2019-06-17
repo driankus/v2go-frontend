@@ -1,36 +1,90 @@
-import { Injectable } from "@angular/core";
-import { LocalStoreService } from "./local-store.service";
-import { Router } from "@angular/router";
-import { of } from "rxjs";
-import { delay } from "rxjs/operators";
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Router } from '@angular/router';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError, BehaviorSubject } from 'rxjs';
 
-@Injectable({
-  providedIn: "root"
-})
+import { User } from '../models/user';
+import { environment } from './../../../environments/environment';
+
+export interface AuthResponseData {
+  id: number;
+  token: string;
+  expiresIn?: string;  // TODO: add expiration date (in API response)
+  username?: string;
+  first_name?: string;
+  last_name?: string;
+  group?: string;
+  registered?: boolean;
+}
+
+@Injectable({ providedIn: 'root' })
 export class AuthService {
-  //Only for demo purpose
-  authenticated = false;
+  private API_URL = environment.devUrl;
+  user = new BehaviorSubject<User>(null);
+  private tokenExpirationTimer: any;
 
-  constructor(private store: LocalStoreService, private router: Router) {
-    this.checkAuth();
+  constructor(private http: HttpClient, private router: Router) {}
+
+  signup(email: string, password: string) {
+    return this.http
+      .post<AuthResponseData>(this.API_URL + 'auth',
+        {
+          email: email,
+          password: password,
+          returnSecureToken: true
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          this.handleAuthentication(
+            resData.id,
+            resData.token,
+            resData.username,
+            +resData.expiresIn
+          );
+        })
+      );
   }
 
-  checkAuth() {
-    // this.authenticated = this.store.getItem("demo_login_status");
+  // login() ...
+
+  // autoLogin() ...
+
+  // logout() ...
+
+  // autoLogout() ...
+
+  private handleAuthentication(
+    id: number,
+    token: string,
+    username: string,
+    expiresIn: number
+  ) {
+    const expirationDate = new Date(new Date().getTime() + expiresIn * 1000);
+    const user = new User(id, token, expirationDate, username);
+    this.user.next(user);
+    // this.autoLogout(expiresIn * 1000);
+    localStorage.setItem('userData', JSON.stringify(user));
   }
 
-  getuser() {
-    return of({});
-  }
-
-  signin(credentials) {
-    this.authenticated = true;
-    this.store.setItem("demo_login_status", true);
-    return of({}).pipe(delay(1500));
-  }
-  signout() {
-    this.authenticated = false;
-    this.store.setItem("demo_login_status", false);
-    this.router.navigateByUrl("/sessions/signin");
+  private handleError(errorRes: HttpErrorResponse) {
+    let errorMessage = 'An unknown error occurred!';
+    if (!errorRes.error || !errorRes.error.error) {
+      return throwError(errorMessage);
+    }
+    switch (errorRes.error.error.message) {
+      case 'EMAIL_EXISTS':
+        errorMessage = 'This email exists already';
+        break;
+      case 'EMAIL_NOT_FOUND':
+        errorMessage = 'This email does not exist.';
+        break;
+      case 'INVALID_PASSWORD':
+        errorMessage = 'This password is not correct.';
+        break;
+    }
+    return throwError(errorMessage);
   }
 }
