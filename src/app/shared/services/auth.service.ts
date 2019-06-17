@@ -29,12 +29,13 @@ export class AuthService {
 
   constructor(private http: HttpClient, private router: Router) {}
 
-  signup(username: string, password: string) {
+  signup(username: string, password1: string, password2: string) {
     return this.http
-      .post<AuthResponseData>(this.API_URL + 'auth',
+      .post<AuthResponseData>(this.API_URL + 'sign-up',
         {
           username: username,
-          password: password,
+          password1: password1,
+          password2: password2,
           returnSecureToken: true
         }
       )
