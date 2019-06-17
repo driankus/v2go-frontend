@@ -115,23 +115,11 @@ export class HomeMapComponent implements OnInit {
         this.poiLng = position.coords.longitude;
         // Get stations near User's location
         this.findStations(this.poiLat, this.poiLng);
-        this.displayUser(position);
       }, error => {
         console.log('# ERROR at searchStationsNearMe(). Message: ', error);
         // Get stations near default MTL coords
         this.findStations(this.poiLat, this.poiLng);
     });
-  }
-  /**
-   *  Method to create a marker and display user locaiton on map
-   */
-  displayUser(position) {
-    this.driver = new Marker(
-      position.coords.latitude,
-      position.coords.longitude,
-      'D',
-      this.driverIcon
-    );
   }
 }
 
