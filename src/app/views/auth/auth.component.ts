@@ -26,18 +26,19 @@ export class AuthComponent {
       return;
     }
     const username = form.value.username;
-    const password = form.value.password;
+    const password1 = form.value.password1;
+    const password2 = form.value.password2;
 
     let authObs: Observable<AuthResponseData>;
 
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      console.log('# !!! API authService.SIGN_UN(), params=', username, password);
+      console.log('# !!! API authService.SIGN_UN(), params=', username, password2);
       // authObs = this.authService.login(email, password);
     } else {
-      console.log('# API authService.signup(), params=', username, password);
-      authObs = this.authService.signup(username, password);
+      console.log('# API authService.signup(), params=', username, password1);
+      authObs = this.authService.signup(username, password1, password2);
     }
 
     authObs.subscribe(
