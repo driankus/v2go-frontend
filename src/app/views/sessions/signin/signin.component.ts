@@ -41,11 +41,11 @@ export class SigninComponent implements OnInit {
     signin() {
         this.loading = true;
         this.loadingText = 'Sigining in...';
-        this.auth.signin(this.signinForm.value)
-            .subscribe(res => {
-                this.router.navigateByUrl('/driver');
-                this.loading = false;
-            });
+        // this.auth.signin(this.signinForm.value)
+        //     .subscribe(res => {
+        //         this.router.navigateByUrl('/driver');
+        //         this.loading = false;
+        //     });
     }
 
 }
