@@ -4,6 +4,7 @@ import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/aut
 import { AuthGaurd } from './shared/services/auth.gaurd';
 import { DriverLayoutComponent } from './shared/components/layouts/driver-layout/driver-layout.component';
 import { AdminLayoutSidebarLargeComponent } from './shared/components/layouts/admin-layout-sidebar-large/admin-layout-sidebar-large.component';
+import { AuthComponent } from './views/auth/auth.component';
 
 const adminRoutes: Routes = [
     {
@@ -19,14 +20,11 @@ const adminRoutes: Routes = [
 const routes: Routes = [
   {
     path: '',
-    component: AuthLayoutComponent,
-    children: [
-      {
-        path: 'sessions',
-        loadChildren: './views/sessions/sessions.module#SessionsModule'
-      },
-    ]
+    redirectTo: 'driver',
+    pathMatch: 'full'
   },
+  // AUTH Routs
+  { path: 'auth', component: AuthComponent },
   // Driver Routs
   {
     path: 'driver',
@@ -51,6 +49,16 @@ const routes: Routes = [
     component: AdminLayoutSidebarLargeComponent,
     canActivate: [AuthGaurd],
     children: adminRoutes
+  },
+  {
+    path: '',
+    component: AuthLayoutComponent,
+    children: [
+      {
+        path: 'sessions',
+        loadChildren: './views/sessions/sessions.module#SessionsModule'
+      }
+    ]
   },
   {
     path: '**',
