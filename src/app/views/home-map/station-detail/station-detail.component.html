@@ -1,21 +1,21 @@
 <div class="card">
   <div class="card-body">
-    <div class="card-title"> Selected station</div>
-    
+    <div class="card-title"> 
+      Selected station 
+      <span style="float:right">
+        <a (click)="backToResults()"
+        class="btn btn-outline-primary btn-rounded btn-sm">
+        <i class="i-Arrow-Back-3"></i></a>
+      </span>
+    </div>    
     <div class="d-flex align-items-left border-bottom-dotted-dim pb-3 mb-3">
       <div class="flex-grow-1">
           <h6 class="m-0">CS {{station.name}}</h6>
           <p class="m-0 text-small text-muted">{{station.address}}</p>
-        <div>
-          <button class="btn btn-outline-primary btn-rounded btn-sm">See availability Calendar</button>
-          
-        </div>
-        <div>
-          <button 
-          class="btn btn-outline-primary btn-rounded btn-sm"
-          (click)="backToResults()"
-          >Results</button>
-        </div>
+          <hr>
+          <div>
+            <button class="btn btn-outline-primary btn-rounded btn-sm">See availability Calendar</button>
+          </div>
       </div>
     </div>
   </div>

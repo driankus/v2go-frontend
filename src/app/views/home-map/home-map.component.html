@@ -78,7 +78,9 @@
       *ngFor="let station of stationsList" 
       [latitude]="station.lat" 
       [longitude]="station.lng"
-      [label]="station.id"></agm-marker>
+      [label]="station.id"
+      (markerClick)="selectedStation=station"
+      ></agm-marker>
       <!-- POI marker -->
       <agm-marker 
       [latitude]="poiLat" 

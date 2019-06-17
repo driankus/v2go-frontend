@@ -37,38 +37,43 @@ const getCurrentPosition = new Observable<Position>(observer => {
   styleUrls: ['./home-map.component.scss']
 })
 export class HomeMapComponent implements OnInit {
-  // Form stuff
-  // formSearch: FormGroup;
-
   loading: boolean;
   selectedStation: ChargingStation; // for station detail
   stationsList: ChargingStation[];
-  driver: Marker;
 
   // Map params
+  driver: Marker;
   locationChosen = false;
   poiLat = 45.508048; // Default coordinates is MTL
   poiLng = -73.568025;
   zoom = 13;
+  // Map marker's icons
+  driverIconImage = 'assets/images/map/CarIcon_top_sm.png';
+  driverIcon = {
+      url: this.driverIconImage,
+      scaledSize: {
+          width: 60,
+          height: 30
+      }
+  };
+  poiIconImage = 'assets/images/map/iconPoi.png';
+  poiIcon = {
+      url: this.poiIconImage,
+      scaledSize: {
+          width: 30,
+          height: 40
+      }
+  };
 
   constructor(
-    // private fb: FormBuilder,
     private searchService: SearchStationsService,
     // private toastr: ToastrService
   ) { }
 
   ngOnInit() {
     this.searchStationsNearMe();
-    // this.buildFormSearch();
   }
-  /**
-   *  FORM STUFF
-   */
-  // buildFormSearch() {
-  //   this.formSearch = this.fb.group({
-  //     experience: []
-  //   });
-  // }
+
   onSubmit() {
     this.loading = true;
     setTimeout(() => {
@@ -90,7 +95,6 @@ export class HomeMapComponent implements OnInit {
         console.log('#'.repeat(100), ' #stationsList !!!: ', stationsList);
       });
   }
-
   /**
    * Event handler displays a marker on the map where click-ed
    *
@@ -101,7 +105,6 @@ export class HomeMapComponent implements OnInit {
     this.poiLng = event.coords.lng;
     this.locationChosen = true;
   }
-
   /**
    * Method get stations near User's location (navigator, if not avail, use MTL coords)
    * then, displays user ans CS on map.
