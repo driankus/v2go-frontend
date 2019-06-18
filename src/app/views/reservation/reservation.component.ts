@@ -71,8 +71,13 @@ export class ReservationComponent implements OnInit {
 
         eventCss.forEach(event => {
           const colors = {
+<<<<<<< HEAD
             AVAILABLE: "#6B8E23",
             RESERVED: "#CD5C5C"
+=======
+            AVAILABLE: '#90EE90',
+            RESERVED: '#FFA07A'
+>>>>>>> reservation
           };
           const calEvent = new CalendarAppEvent({
             start: new Date(event.startDateTime),
@@ -116,9 +121,13 @@ export class ReservationComponent implements OnInit {
           this.isReserved = true; // TODO replace by toasterNotification
           this.ngOnInit();
           this.refresh.next();
+<<<<<<< HEAD
           this.toastr.success("Reservation made", "Success!", {
             progressBar: true
           });
+=======
+          this.toastr.success('Reservation made', 'Success!', {progressBar: true});
+>>>>>>> reservation
         },
         error => {
           console.error(error);
@@ -155,6 +164,7 @@ export class ReservationComponent implements OnInit {
           );
 
           if (dialogAction === "reserve") {
+<<<<<<< HEAD
             if (
               event.start.getTime() === startDateTime.getTime() &&
               event.end.getTime() === endDateTime.getTime()
@@ -169,6 +179,12 @@ export class ReservationComponent implements OnInit {
                 startDateTime,
                 endDateTime
               );
+=======
+            if (event.start.getTime() === startDateTime.getTime() && event.end.getTime() === endDateTime.getTime()) {
+              this.makeReservation(event.meta.notes);
+            } else if (event.start.getTime() === startDateTime.getTime() || event.end.getTime() === endDateTime.getTime()) {
+              this.makeReservation(event.meta.notes, startDateTime, endDateTime);
+>>>>>>> reservation
             }
             this.refresh.next();
           }
