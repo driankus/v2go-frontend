@@ -34,7 +34,6 @@ const routes: Routes = [
       },
     ]
   },
-
   // Driver Routs
   {
     path: 'driver',
@@ -61,16 +60,6 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     children: adminRoutes
   },
-  // {
-  //   path: '',
-  //   component: AuthLayoutComponent,
-  //   children: [
-  //     {
-  //       path: 'sessions',
-  //       loadChildren: './views/sessions/sessions.module#SessionsModule'
-  //     }
-  //   ]
-  // },
   {
     path: '**',
     redirectTo: 'others/404'
