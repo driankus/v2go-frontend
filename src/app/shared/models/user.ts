@@ -27,22 +27,4 @@ export class User {
       data.group,
     );
   }
-
-  // Check if user is logged in
-  // private getUser(): User {
-  //   const userData = localStorage.getItem('v2go.user');
-  //   if (userData) {
-  //     return User.create(JSON.parse(userData));
-  //   }
-  //   return null;
-  // }
-
-  // Determines whether the user belongs to the group (DRIVER)
-  // isDriver(): boolean {
-  //   const user = User.getUser();
-  //   if (user === null) {
-  //     return false;
-  //   }
-  //   return user.group === 'driver';
-  // }
 }
