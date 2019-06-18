@@ -96,5 +96,5 @@
 
   </form>
   <div class="modal-footer">
-    <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded" (click)="activeModal.close({action: 'reserve', event: eventForm.value})">Reserve</button>
+    <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded" (click)="activeModal.close({action: 'save', event: eventForm.value})">Save</button>
   </div>

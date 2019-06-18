@@ -99,15 +99,4 @@ export class ReservationComponent implements OnInit {
       });
     // Get CS info and availability
   }
-
-  public makeReservation(eventCsNk) {
-    this.reservationService.makeReservation(eventCsNk, this.evNk).subscribe(
-      () => {
-        this.isReserved = true; // TODO replace by toasterNotification
-      },
-      error => {
-        console.error(error);
-      }
-    );
-  }
 }

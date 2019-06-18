@@ -72,12 +72,4 @@ export class ReservationService {
 
     return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
   }
-
-  public makeReservation(eventCsNk, evNk): Observable<Reservation> {
-    return this.http.post<Reservation>(this.API_URL + 'reservations/',
-      {
-        event_cs_nk: eventCsNk,
-        ev_nk: evNk
-      });
-  }
 }
