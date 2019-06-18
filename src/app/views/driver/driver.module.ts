@@ -8,6 +8,7 @@ import { AgmCoreModule } from '@agm/core';
 import { DriverRoutingModule } from './driver-routing.module';
 import { HomeMapComponent } from '../home-map/home-map.component';
 import { StationDetailComponent } from '../home-map/station-detail/station-detail.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 @NgModule({
@@ -23,6 +24,6 @@ import { StationDetailComponent } from '../home-map/station-detail/station-detai
       }),
       DriverRoutingModule
     ],
-    declarations: [ HomeMapComponent, StationDetailComponent ]
+    declarations: [ HomeMapComponent, StationDetailComponent, ProfileComponent ]
   })
 export class DriverModule { }
