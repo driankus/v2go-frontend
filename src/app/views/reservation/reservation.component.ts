@@ -74,8 +74,8 @@ export class ReservationComponent implements OnInit {
 
         eventCss.forEach(event => {
           const colors = {
-            AVAILABLE: "#6B8E23",
-            RESERVED: "#CD5C5C"
+            AVAILABLE: '#90EE90',
+            RESERVED: '#FFA07A'
           };
           const calEvent = new CalendarAppEvent({
             start: new Date(event.startDateTime),
