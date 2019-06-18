@@ -12,16 +12,16 @@ import {
   CalendarEventAction,
   CalendarEventTimesChangedEvent,
   CalendarEvent
-} from "angular-calendar";
-import { CalendarAppService } from "../calendar/calendar-app.service";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { CalendarFormDialogComponent } from "../calendar/calendar-form-dialog/calendar-form-dialog.component";
-import { Utils } from "src/app/shared/utils";
+} from 'angular-calendar';
+import { CalendarAppService } from '../calendar/calendar-app.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { CalendarFormDialogComponent } from '../calendar/calendar-form-dialog/calendar-form-dialog.component';
+import { Utils } from 'src/app/shared/utils';
 
 @Component({
-  selector: "app-reservation",
-  templateUrl: "./reservation.component.html",
-  styleUrls: ["./reservation.component.scss"]
+  selector: 'app-reservation',
+  templateUrl: './reservation.component.html',
+  styleUrls: ['./reservation.component.scss']
 })
 export class ReservationComponent implements OnInit {
   eventCss: EventCS[];
@@ -69,8 +69,6 @@ export class ReservationComponent implements OnInit {
         this.chargingStation = chargingStation;
       });
 
-      const today = new Date();
-
     this.reservationService
       .getAvailabilities(
         this.convertDateToAPIFormat(this.getTodayStartingAt8Am()),
@@ -111,70 +109,5 @@ export class ReservationComponent implements OnInit {
         console.error(error);
       }
     );
-  }
-
-  private initEvents(events): CalendarAppEvent[] {
-    return events.map(event => {
-      event.actions = this.actions;
-      return new CalendarAppEvent(event);
-    });
-  }
-
-  public handleEvent(action: string, event: CalendarAppEvent): void {
-    const dialogRef = this.modalService.open(CalendarFormDialogComponent, {
-      centered: true
-    });
-    dialogRef.componentInstance.data = { event, action };
-    dialogRef.result
-      .then(res => {
-        if (!res) {
-          return;
-        }
-        const dialogAction = res.action;
-        const responseEvent = res.event;
-        responseEvent.start = Utils.ngbDateToDate(responseEvent.start);
-        responseEvent.end = Utils.ngbDateToDate(responseEvent.end);
-        console.log(res);
-        if (dialogAction === "reserve") {
-          this.makeReservation(event.meta.notes);
-          this.refresh.next();
-        } else if (dialogAction === "delete") {
-          this.removeEvent(event);
-        }
-      })
-      .catch(e => {
-        console.log(e);
-      });
-  }
-
-  public eventTimesChanged({
-    event,
-    newStart,
-    newEnd
-  }: CalendarEventTimesChangedEvent): void {
-    event.start = newStart;
-    event.end = newEnd;
-
-    this.calendarService.updateEvent(event).subscribe(events => {
-      this.events = this.initEvents(events);
-      this.refresh.next();
-    });
-  }
-
-  public removeEvent(event) {
-    this.modalService
-      .open(this.eventDeleteConfirm, {
-        ariaLabelledBy: "modal-basic-title",
-        centered: true
-      })
-      .result.then(
-        result => {
-          this.calendarService.deleteEvent(event._id).subscribe(events => {
-            this.events = this.initEvents(events);
-            this.refresh.next();
-          });
-        },
-        reason => {}
-      );
   }
 }

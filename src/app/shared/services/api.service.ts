@@ -74,9 +74,6 @@ export class ReservationService {
   }
 
   public makeReservation(eventCsNk, evNk): Observable<Reservation> {
-    console.log(eventCsNk);
-    console.log(evNk);
-    
     return this.http.post<Reservation>(this.API_URL + 'reservations/',
       {
         event_cs_nk: eventCsNk,
