@@ -19,7 +19,7 @@ export class LocalStoreService {
     try {
       return JSON.parse(value);
     } catch (e) {
-      // console.log(e)
+      console.log('Error at Local Store Service. Error message: ', e);
       return null;
     }
   }
