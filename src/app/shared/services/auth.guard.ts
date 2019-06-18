@@ -23,7 +23,7 @@ export class AuthGuard implements CanActivate {
     router: RouterStateSnapshot
   ): boolean | Promise<boolean> | Observable<boolean> {
     return this.authService.user.pipe(
-      // take(1),
+      take(1),
       map(user => {
         return !!user;
       }),
