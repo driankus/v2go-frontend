@@ -52,13 +52,71 @@ export class AuthService {
       );
   }
 
-  // login() ...
+  login(username: string, password: string) {
+    return this.http
+    .post<AuthResponseData>(this.API_URL + 'auth',
+        {
+          username: username,
+          password: password,
+          returnSecureToken: true
+        }
+      )
+      .pipe(
+        catchError(this.handleError),
+        tap(resData => {
+          console.log('# resData', resData);
+          this.handleAuthentication(
+            resData.id,
+            resData.token,
+            resData.username,
+            +resData.expiresIn
+          );
+        })
+      );
+  }
 
-  // autoLogin() ...
+  autoLogin() {
+    const userData: {
+      username: string;
+      id: string;
+      _token: string;
+      _tokenExpirationDate: string;
+    } = JSON.parse(localStorage.getItem('userData'));
+    if (!userData) {
+      return;
+    }
 
-  // logout() ...
+    const loadedUser = new User(
+      +userData.id,
+      userData._token,
+      new Date(userData._tokenExpirationDate),
+      userData.username
+    );
 
-  // autoLogout() ...
+    if (loadedUser.token) {
+      this.user.next(loadedUser);
+      const expirationDuration =
+        new Date(userData._tokenExpirationDate).getTime() -
+        new Date().getTime();
+      this.autoLogout(expirationDuration);
+    }
+  }
+
+  logout() {
+    this.user.next(null);
+    this.router.navigate(['/auth']);
+    localStorage.removeItem('userData');
+    if (this.tokenExpirationTimer) {
+      clearTimeout(this.tokenExpirationTimer);
+    }
+    this.tokenExpirationTimer = null;
+  }
+
+  autoLogout(expirationDuration: number) {
+    this.tokenExpirationTimer = setTimeout(() => {
+      this.logout();
+    }, expirationDuration);
+  }
 
   private handleAuthentication(
     id: number,
@@ -79,10 +137,11 @@ export class AuthService {
       return throwError(errorMessage);
     }
     switch (errorRes.error.error.message) {
-      case 'EMAIL_EXISTS':
+      // TODO: Include this type of messages in API response
+      case 'USERNAME_EXISTS':
         errorMessage = 'This email exists already';
         break;
-      case 'EMAIL_NOT_FOUND':
+      case 'USERNAME_NOT_FOUND':
         errorMessage = 'This email does not exist.';
         break;
       case 'INVALID_PASSWORD':
