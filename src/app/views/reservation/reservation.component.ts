@@ -27,6 +27,7 @@ export class ReservationComponent implements OnInit {
   chargingStation: ChargingStation;
   dataLoaded: Promise<boolean>;
 
+  startWeekOn: number;
   isReserved = false;
 
   public viewDate = new Date();
@@ -50,6 +51,7 @@ export class ReservationComponent implements OnInit {
 
   ngOnInit() {
     this.events = [];
+    this.startWeekOn = new Date().getDay();
     this.mainService
       .getChargingStation(this.csNk)
       .subscribe(chargingStation => {
