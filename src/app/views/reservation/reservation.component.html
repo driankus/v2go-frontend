@@ -1,0 +1,31 @@
+<div class="row">
+  <!-- CS Info side-bar -->
+  <div class="col-lg-3 col-md-6 col-sm-6" *ngIf="dataLoaded | async">
+    <div class="card" >
+        <div class="card-image">
+            <img src="https://39wp0d2t9r8bz4tj13sgj9lz-wpengine.netdna-ssl.com/wp-content/uploads/2017/08/Electric-Car-Charging-Stations-1024x684.jpg">
+        </div>
+      <div class="card-content" style="margin:10px 0px">
+        <h5 class="card-title" align="center">CS info {{chargingStation.name}}</h5>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Charger Level: {{chargingStation.charge_level}}</li>
+            <li class="list-group-item">Tarif: {{chargingStation.tarif_text}}</li>
+            <li class="list-group-item">Location
+                <p>{{chargingStation.address}}</p>
+                <img src="https://cdn-images-1.medium.com/max/1600/1*RKpCRwFy6hyVCqHcFwbCWQ.png" alt="Charging Station">
+            </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- Avail Calendar / Reservation form -->
+  <div class="col-lg-9 col-md-6 col-sm-6" *ngIf="dataLoaded | async">
+    <mwl-calendar-week-view [viewDate]="viewDate" [events]="events" [refresh]="refresh"
+    (eventClicked)="handleEvent('edit', $event.event)" (eventTimesChanged)="eventTimesChanged($event)"
+    [dayStartHour]="8" [dayEndHour]="20" [weekStartsOn]="startWeekOn">
+    </mwl-calendar-week-view>
+  </div>
+
+
+</div>

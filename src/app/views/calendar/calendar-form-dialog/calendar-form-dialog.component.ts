@@ -21,6 +21,46 @@ export class CalendarFormDialogComponent implements OnInit {
   dialogTitle: string;
   eventForm: FormGroup;
   action: string;
+
+
+  ctrl = new FormControl('', (control: FormControl) => {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    if (value.hour < this.event.start.getHours() || (value.hour === this.event.start.getHours() && value.minute < this.event.start.getMinutes())) {
+      return {tooEarly: true};
+    }
+    if (value.hour > this.event.end.getHours() && value.minute > this.event.end.getMinutes()) {
+      return {tooLate: true};
+    }
+
+    return null;
+  });
+
+  nextCtrl = new FormControl('', (control: FormControl) => {
+    const value = control.value;
+
+    if (!value) {
+      return null;
+    }
+
+    if (value.hour < this.ctrl.value.hour || (value.hour < this.ctrl.value.hour && value.minute < this.ctrl.value.minute)) {
+      return {invalid: true};
+    }
+
+    if (value.hour < this.event.start.getHours() && value.minute < this.event.start.getMinutes()) {
+      return {tooEarly: true};
+    }
+    if (value.hour > this.event.end.getHours() || (value.hour === this.event.end.getHours() && value.minute > this.event.end.getMinutes())) {
+      return {tooLate: true};
+    }
+
+    return null;
+  });
+
   constructor(
     public activeModal: NgbActiveModal,
     private formBuilder: FormBuilder
@@ -33,6 +73,8 @@ export class CalendarFormDialogComponent implements OnInit {
       } else {
         this.dialogTitle = 'Add Event';
         this.event = new CalendarAppEvent(this.data.event);
+        this.ctrl.setValue({'hour': this.event.start.getHours(), 'minute': this.event.start.getMinutes()});
+        this.nextCtrl.setValue({'hour': this.event.end.getHours(), 'minute': this.event.end.getMinutes()});
       }
       this.eventForm = this.buildEventForm(this.event);
 
@@ -44,8 +86,6 @@ export class CalendarFormDialogComponent implements OnInit {
     return new FormGroup({
       _id: new FormControl(event._id),
       title: new FormControl(event.title, Validators.required),
-      start: new FormControl(Utils.dateToNgbDate(event.start), Validators.required),
-      end: new FormControl(Utils.dateToNgbDate(event.end)),
       allDay: new FormControl(event.allDay),
       color: this.formBuilder.group({
         primary: new FormControl(event.color.primary),
