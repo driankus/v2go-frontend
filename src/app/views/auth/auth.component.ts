@@ -34,8 +34,8 @@ export class AuthComponent {
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      console.log('# !!! API authService.SIGN_UN(), params=', username, password2);
-      // authObs = this.authService.login(email, password);
+      console.log('# API authService.signin(), params=', username, password1);
+      authObs = this.authService.login(username, password1);
     } else {
       console.log('# API authService.signup(), params=', username, password1);
       authObs = this.authService.signup(username, password1, password2);
