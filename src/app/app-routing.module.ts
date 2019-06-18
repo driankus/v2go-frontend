@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
-import { AuthGuard } from './shared/services/auth.gaurd';
+import { AuthGuard } from './shared/services/auth.guard';
 import { DriverLayoutComponent } from './shared/components/layouts/driver-layout/driver-layout.component';
 import { AdminLayoutSidebarLargeComponent } from './shared/components/layouts/admin-layout-sidebar-large/admin-layout-sidebar-large.component';
 import { AuthComponent } from './views/auth/auth.component';
@@ -53,7 +53,6 @@ const routes: Routes = [
         path: 'calendar',
         loadChildren: './views/calendar/calendar.module#CalendarAppModule'
       },
-      { path: 'auth', component: AuthComponent },
     ]
   },
   {
