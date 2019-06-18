@@ -71,13 +71,8 @@ export class ReservationComponent implements OnInit {
 
         eventCss.forEach(event => {
           const colors = {
-<<<<<<< HEAD
-            AVAILABLE: "#6B8E23",
-            RESERVED: "#CD5C5C"
-=======
             AVAILABLE: '#90EE90',
             RESERVED: '#FFA07A'
->>>>>>> reservation
           };
           const calEvent = new CalendarAppEvent({
             start: new Date(event.startDateTime),
@@ -121,13 +116,7 @@ export class ReservationComponent implements OnInit {
           this.isReserved = true; // TODO replace by toasterNotification
           this.ngOnInit();
           this.refresh.next();
-<<<<<<< HEAD
-          this.toastr.success("Reservation made", "Success!", {
-            progressBar: true
-          });
-=======
           this.toastr.success('Reservation made', 'Success!', {progressBar: true});
->>>>>>> reservation
         },
         error => {
           console.error(error);
