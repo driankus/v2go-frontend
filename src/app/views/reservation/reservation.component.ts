@@ -153,27 +153,10 @@ export class ReservationComponent implements OnInit {
           );
 
           if (dialogAction === "reserve") {
-<<<<<<< HEAD
-            if (
-              event.start.getTime() === startDateTime.getTime() &&
-              event.end.getTime() === endDateTime.getTime()
-            ) {
-              this.makeReservation(event.meta.notes);
-            } else if (
-              event.start.getTime() === startDateTime.getTime() ||
-              event.end.getTime() === endDateTime.getTime()
-            ) {
-              this.makeReservation(
-                event.meta.notes,
-                startDateTime,
-                endDateTime
-              );
-=======
             if (event.start.getTime() === startDateTime.getTime() && event.end.getTime() === endDateTime.getTime()) {
               this.makeReservation(event.meta.notes);
             } else if (event.start.getTime() === startDateTime.getTime() || event.end.getTime() === endDateTime.getTime()) {
               this.makeReservation(event.meta.notes, startDateTime, endDateTime);
->>>>>>> reservation
             }
             this.refresh.next();
           }
