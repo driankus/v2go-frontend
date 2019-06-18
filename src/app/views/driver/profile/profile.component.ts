@@ -7,7 +7,10 @@ import { UserAccountInfoService } from '../../../shared/services/api.service';
   styleUrls: ['./profile.component.scss']
 })
 export class ProfileComponent implements OnInit {
-  accountInfo: any;
+  myInfo: any;
+  myEvs: any;
+  myReservations: any;
+
   user_pk = 3;
 
   constructor(
@@ -22,8 +25,10 @@ export class ProfileComponent implements OnInit {
   getUserInfo(): void {
     this.accountService.getAccountInfo(this.user_pk)
       .subscribe(userData => {
-        this.accountInfo = userData;
         console.log('#'.repeat(100), ' #userData!!!: ', userData);
+        this.myInfo = userData.user;
+        this.myEvs = userData.ev;
+        this.myReservations = userData.reservations;
       });
   }
 
