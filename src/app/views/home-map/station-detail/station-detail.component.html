@@ -14,12 +14,22 @@
         <hr>
         <div>
           <button class="btn btn-outline-primary btn-rounded btn-sm"
-            [routerLink]="['../driver/reserve', station.nk]">See availability Calendar</button>
-
+          [routerLink]="['../driver/reserve', station.nk]">See availability Calendar</button>
+          
         </div>
         <div>
           <button class="btn btn-outline-primary btn-rounded btn-sm" (click)="backToResults()">Results</button>
         </div>
+      </div>
+    </div>
+
+    <div *ngFor="let available of stationAvailabilities">
+      <div *ngIf="available.status === 'AVAILABLE'" class="card">
+        <div class="card-body">Available from {{available.startDateTime.split(' ')[1]}} - {{available.endDateTime.split(' ')[1]}}</div>
+        <button
+        class="btn btn-outline-primary btn-rounded btn-sm"
+        (click)="makeReservation(available.nk)"
+        >Reserve</button>
       </div>
     </div>
   </div>
