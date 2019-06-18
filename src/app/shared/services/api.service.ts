@@ -88,17 +88,14 @@ export class ReservationService {
 
   public getAvailabilities(startDateTime, endDateTime, csNk) {
     const params = new HttpParams()
-      .set('csNk', csNk)
-      .set('startDateTime', startDateTime)
-      .append('endDateTime', endDateTime);
+      .set('cs_nk', csNk)
+      .set('start_datetime', startDateTime)
+      .append('end_datetime', endDateTime);
 
     return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
   }
 
   public makeReservation(eventCsNk, evNk): Observable<Reservation> {
-    console.log(eventCsNk);
-    console.log(evNk);
-    
     return this.http.post<Reservation>(this.API_URL + 'reservations/',
       {
         event_cs_nk: eventCsNk,
