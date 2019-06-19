@@ -73,7 +73,6 @@ export class ReservationComponent implements OnInit {
       )
       .subscribe(eventCss => {
         this.eventCss = eventCss;
-        console.log(this.eventCss);
 
         eventCss.forEach(event => {
           const calEvent = new CalendarAppEvent({

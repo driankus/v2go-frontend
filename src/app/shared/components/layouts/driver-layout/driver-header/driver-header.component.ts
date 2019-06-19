@@ -56,8 +56,8 @@ export class DriverHeaderComponent implements OnInit {
     }
   }
 
-  signout() {
-    this.auth.signout();
+  logout() {
+    this.auth.logout();
   }
 
 }

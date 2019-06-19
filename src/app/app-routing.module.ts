@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AuthLayoutComponent } from './shared/components/layouts/auth-layout/auth-layout.component';
-import { AuthGaurd } from './shared/services/auth.gaurd';
+import { AuthGuard } from './shared/services/auth.guard';
 import { DriverLayoutComponent } from './shared/components/layouts/driver-layout/driver-layout.component';
 import { AdminLayoutSidebarLargeComponent } from './shared/components/layouts/admin-layout-sidebar-large/admin-layout-sidebar-large.component';
+import { AuthComponent } from './views/auth/auth.component';
 
 const adminRoutes: Routes = [
     {
@@ -19,11 +20,17 @@ const adminRoutes: Routes = [
 const routes: Routes = [
   {
     path: '',
+    redirectTo: 'driver',
+    pathMatch: 'full'
+  },
+  // AUTH Routs
+  {
+    path: '',
     component: AuthLayoutComponent,
     children: [
       {
-        path: 'sessions',
-        loadChildren: './views/sessions/sessions.module#SessionsModule'
+        path: 'auth',
+        component: AuthComponent
       },
     ]
   },
@@ -31,6 +38,7 @@ const routes: Routes = [
   {
     path: 'driver',
     component: DriverLayoutComponent,
+    canActivate: [AuthGuard],
     children: [
       {
         path: '',
@@ -49,7 +57,7 @@ const routes: Routes = [
   {
     path: '',
     component: AdminLayoutSidebarLargeComponent,
-    canActivate: [AuthGaurd],
+    canActivate: [AuthGuard],
     children: adminRoutes
   },
   {

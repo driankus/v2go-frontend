@@ -42,10 +42,7 @@ export class MainService {
   API_URL = environment.devUrl + 'stations/';
   user: User;
 
-  constructor(private http: HttpClient) {
-    const userData = localStorage.getItem('v2go.user');
-    this.user = User.create(JSON.parse(userData));
-  }
+  constructor(private http: HttpClient) {}
 
   public getChargingStation(csNk: string) {
     return this.http.get<ChargingStation>(this.API_URL + csNk + '/');
@@ -59,10 +56,7 @@ export class ReservationService {
   API_URL = environment.devUrl + 'volt_reservation/';
   user: User;
 
-  constructor(private http: HttpClient) {
-    const userData = localStorage.getItem('v2go.user');
-    this.user = User.create(JSON.parse(userData));
-  }
+  constructor(private http: HttpClient) {}
 
   public getAvailabilities(startDateTime, endDateTime, csNk) {
     const params = new HttpParams()
