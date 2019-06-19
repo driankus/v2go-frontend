@@ -42,10 +42,7 @@ export class MainService {
   API_URL = environment.devUrl + 'stations/';
   user: User;
 
-  constructor(private http: HttpClient) {
-    const userData = localStorage.getItem('v2go.user');
-    this.user = User.create(JSON.parse(userData));
-  }
+  constructor(private http: HttpClient) {}
 
   public getChargingStation(csNk: string) {
     return this.http.get<ChargingStation>(this.API_URL + csNk + '/');
@@ -59,10 +56,7 @@ export class ReservationService {
   API_URL = environment.devUrl + 'volt_reservation/';
   user: User;
 
-  constructor(private http: HttpClient) {
-    const userData = localStorage.getItem('v2go.user');
-    this.user = User.create(JSON.parse(userData));
-  }
+  constructor(private http: HttpClient) {}
 
   public getAvailabilities(startDateTime, endDateTime, csNk) {
     const params = new HttpParams()
@@ -73,21 +67,11 @@ export class ReservationService {
     return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
   }
 
-  public makeReservation(event_cs_nk, ev_nk, custom_start_datetime, custom_end_datetime): Observable<Reservation> {
-    if (custom_start_datetime && custom_end_datetime) {
-      return this.http.post<Reservation>(this.API_URL + 'reservations/custom/',
+  public makeReservation(eventCsNk, evNk): Observable<Reservation> {
+    return this.http.post<Reservation>(this.API_URL + 'reservations/',
       {
-        event_cs_nk,
-        ev_nk,
-        custom_start_datetime,
-        custom_end_datetime
+        event_cs_nk: eventCsNk,
+        ev_nk: evNk
       });
-    } else {
-      return this.http.post<Reservation>(this.API_URL + 'reservations/',
-      {
-        event_cs_nk,
-        ev_nk
-      });
-    }
   }
 }

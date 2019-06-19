@@ -22,7 +22,7 @@
   <!-- Avail Calendar / Reservation form -->
   <div class="col-lg-9 col-md-6 col-sm-6" *ngIf="dataLoaded | async">
     <mwl-calendar-week-view [viewDate]="today" [events]="events" [refresh]="refresh"
-    (eventClicked)="handleEvent('edit', $event.event)" [dayStartHour]="8" [dayEndHour]="20" [weekStartsOn]="startWeekOn">
+    [dayStartHour]="8" [dayEndHour]="20" [weekStartsOn]="startWeekOn">
     </mwl-calendar-week-view>
   </div>
 
