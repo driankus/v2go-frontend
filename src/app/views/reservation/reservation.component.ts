@@ -45,7 +45,8 @@ export class ReservationComponent implements OnInit {
   constructor(
     private reservationService: ReservationService,
     private route: ActivatedRoute,
-    private mainService: MainService
+    private mainService: MainService,
+    private modalService: NgbModal
   ) {
     this.route.params.subscribe(params => (this.csNk = params.nk));
   }
@@ -59,7 +60,7 @@ export class ReservationComponent implements OnInit {
   }
 
   convertDateToAPIFormat(date: Date): String {
-    return date.toISOString().replace('T', ' ').split('.000Z')[0];
+    return `${date.toISOString().split('T')[0]} ${date.toTimeString().split(' ')[0]}`;
   }
 
   ngOnInit() {
@@ -77,6 +78,7 @@ export class ReservationComponent implements OnInit {
       )
       .subscribe(eventCss => {
         this.eventCss = eventCss;
+        console.log(this.eventCss);
 
         eventCss.forEach(event => {
           const calEvent = new CalendarAppEvent({
@@ -98,5 +100,68 @@ export class ReservationComponent implements OnInit {
         this.dataLoaded = Promise.resolve(true);
       });
     // Get CS info and availability
+  }
+
+  public makeReservation(eventCsNk, startDateTime = null, endDateTime = null) {
+    startDateTime =
+      startDateTime == null
+        ? startDateTime
+        : this.convertDateToAPIFormat(startDateTime);
+    endDateTime =
+      endDateTime == null ? endDateTime : this.convertDateToAPIFormat(endDateTime);
+    this.reservationService
+      .makeReservation(eventCsNk, this.evNk, startDateTime, endDateTime)
+      .subscribe(
+        () => {
+          this.isReserved = true; // TODO replace by toasterNotification
+          this.refresh.next();
+        },
+        error => {
+          console.error(error);
+        }
+      );
+  }
+
+  public handleEvent(action: string, event: CalendarAppEvent): void {
+    if (event.title !== "RESERVED") {
+      const dialogRef = this.modalService.open(CalendarFormDialogComponent, {
+        centered: true
+      });
+      dialogRef.componentInstance.data = { event, action };
+      dialogRef.result
+        .then(res => {
+          if (!res) {
+            return;
+          }
+          const dialogAction = res.action;
+          const responseEvent = res.event;
+          const startDateTime = new Date(
+            event.start.getFullYear(),
+            event.start.getMonth(),
+            event.start.getDate(),
+            res.startTime.hour,
+            res.startTime.minute
+          );
+          const endDateTime = new Date(
+            event.end.getFullYear(),
+            event.end.getMonth(),
+            event.end.getDate(),
+            res.endTime.hour,
+            res.endTime.minute
+          );
+
+          if (dialogAction === 'reserve') {
+            if (event.start.getTime() === startDateTime.getTime() && event.end.getTime() === endDateTime.getTime()) {
+              this.makeReservation(event.meta.notes);
+            } else {
+              this.makeReservation(event.meta.notes, startDateTime, endDateTime);
+            }
+            this.refresh.next();
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 }

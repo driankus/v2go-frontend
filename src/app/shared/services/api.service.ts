@@ -72,4 +72,22 @@ export class ReservationService {
 
     return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
   }
+
+  public makeReservation(event_cs_nk, ev_nk, custom_start_datetime, custom_end_datetime): Observable<Reservation> {
+    if (custom_start_datetime && custom_end_datetime) {
+      return this.http.post<Reservation>(this.API_URL + 'reservations/custom/',
+      {
+        event_cs_nk,
+        ev_nk,
+        custom_start_datetime,
+        custom_end_datetime
+      });
+    } else {
+      return this.http.post<Reservation>(this.API_URL + 'reservations/',
+      {
+        event_cs_nk,
+        ev_nk
+      });
+    }
+  }
 }
