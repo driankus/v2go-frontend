@@ -36,7 +36,7 @@
     </div>
   
     <div class="modal-footer">
-      <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded"
+      <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded" [routerLink]="['../driver']"
         (click)="activeModal.close({action: 'reserve', event: eventForm.value, startTime: ctrl.value, endTime: nextCtrl.value})">Reserve</button>
     </div>
   </div>
