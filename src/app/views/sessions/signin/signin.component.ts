@@ -33,19 +33,19 @@ export class SigninComponent implements OnInit {
         });
 
         this.signinForm = this.fb.group({
-            email: ['test@example.com', Validators.required],
-            password: ['1234', Validators.required]
+            username: ['t_driver', Validators.required],
+            password: ['letmein!', Validators.required]
         });
     }
 
     signin() {
         this.loading = true;
         this.loadingText = 'Sigining in...';
-        this.auth.signin(this.signinForm.value)
-            .subscribe(res => {
-                this.router.navigateByUrl('/dashboard/v1');
-                this.loading = false;
-            });
+        // this.auth.signin(this.signinForm.value)
+        //     .subscribe(res => {
+        //         this.router.navigateByUrl('/driver');
+        //         this.loading = false;
+        //     });
     }
 
 }
