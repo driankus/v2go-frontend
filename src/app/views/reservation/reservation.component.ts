@@ -38,7 +38,8 @@ export class ReservationComponent implements OnInit {
     private reservationService: ReservationService,
     private route: ActivatedRoute,
     private mainService: MainService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal
+  ) {
     this.route.params.subscribe(params => (this.csNk = params.nk));
   }
 
