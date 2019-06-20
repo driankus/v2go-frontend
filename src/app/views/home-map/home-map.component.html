@@ -71,14 +71,13 @@
       <agm-marker 
       [latitude]="driver.lat" 
       [longitude]="driver.lng" 
-      [iconUrl]="driver.icon" 
+      
       *ngIf="driver"></agm-marker>
       <!-- Stations marker -->
       <agm-marker 
       *ngFor="let station of stationsList" 
       [latitude]="station.lat" 
       [longitude]="station.lng"
-      [label]="station.id"
       (markerClick)="selectedStation=station"
       ></agm-marker>
       <!-- POI marker -->
