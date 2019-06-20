@@ -30,7 +30,7 @@ export class ProfileComponent implements OnInit {
       .subscribe(userData => {
         console.log('#'.repeat(100), ' #userData!!!: ', userData);
         this.myInfo = userData.user;
-        this.myEvs = userData.ev;
+        this.myEvs = userData.evs;
         this.myReservations = userData.reservations;
         console.log(' #myInfo!!!: ', this.myInfo);
         this.isLoading = !this.isLoading;
