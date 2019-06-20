@@ -34,16 +34,13 @@ export class AuthComponent {
     this.isLoading = true;
 
     if (this.isLoginMode) {
-      console.log('# API authService.signin(), params=', username, password1);
       authObs = this.authService.login(username, password1);
     } else {
-      console.log('# API authService.signup(), params=', username, password1);
       authObs = this.authService.signup(username, password1, password2);
     }
 
     authObs.subscribe(
       resData => {
-        console.log(resData);
         this.isLoading = false;
         this.router.navigate(['/driver']);
       },

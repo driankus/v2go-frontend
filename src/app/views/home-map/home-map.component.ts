@@ -92,7 +92,6 @@ export class HomeMapComponent implements OnInit {
     this.searchService.findStations(lat, lng)
       .subscribe(stationsList => {
         this.stationsList = stationsList;
-        console.log('#'.repeat(100), ' #stationsList !!!: ', stationsList);
       });
   }
   /**

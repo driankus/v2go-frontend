@@ -64,7 +64,6 @@ export class AuthService {
       .pipe(
         catchError(this.handleError),
         tap(resData => {
-          console.log('# resData', resData);
           this.handleAuthentication(
             resData.id,
             resData.token,
@@ -105,7 +104,6 @@ export class AuthService {
   logout() {
     this.user.next(null);
     this.router.navigate(['/auth']);
-    console.log('# Succesful loged-out!');
     localStorage.removeItem('userData');
     if (this.tokenExpirationTimer) {
       clearTimeout(this.tokenExpirationTimer);
@@ -158,15 +156,12 @@ export class AuthService {
   }
 
   getuser() {
-    console.log('REMOVE THIS');
     this.authenticated = true;
   }
 
   signin(credentials) {
-    console.log('REMOVE THIS', credentials);
   }
   signout() {
-    console.log('REMOVE THIS');
     this.authenticated = false;
   }
 }
