@@ -1,5 +1,65 @@
-<h2>Account info</h2>>
-<p> USER: {{ myInfo.first_name}} {{ myInfo.id}}</p>
-<p> EVs: {{ myEvs[0].nickname }} </p>
-<p> RESERVATIONS: {{ myReservations[0] }} </p>
+<h2>Account info</h2>
+<!-- <p> USER: {{ myInfo}}</p> -->
+<!-- <p> EVs: {{ myEvs[0].nickname }} </p>
+<p> RESERVATIONS: {{ myReservations[0] }} </p> -->
 
+<div *ngIf="isLoading" style="text-align: center;">
+  <p> app-loading-spinner comes here</p>
+</div>
+<div class="" *ngIf="!isLoading">
+  <div class="row">
+      <div class="col-lg-6 col-md-12">
+          <div class="row">
+            <!-- USER INFO -->
+            <div class="col-md-6">
+                <div class="card mb-4 o-hidden">
+                  <img class="card-img-top" src="./assets/images/faces/15.jpg" alt="">
+                  <div class="card-body">
+                    <h5 class="card-title"> {{myInfo.first_name}} {{myInfo.last_name}}</h5>
+                    <p class="card-text">Joined V2Go in June 17th, 2019</p>
+                  </div>
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Age 28yrs</li>
+                    <li class="list-group-item">Male</li>
+                    <li class="list-group-item">438-888-8888</li>
+                  </ul>
+                  <div class="card-body">
+                    <a href="#" class="card-link">pierre@v2go.io</a>
+                  </div>
+                </div>
+              </div>
+
+            <!-- BG IMAGE CARDS -->
+            <!-- <div class="col-md-6">
+              <div class="card bg-dark text-white o-hidden mb-4">
+                <img class="card-img" src="./assets/images/photo-long-1.jpg" alt="Card image">
+                <div class="card-img-overlay">
+                  <div class="text-center pt-4">
+                    <h5 class="card-title mb-2 text-white">Card title</h5>
+                    <div class="separator border-top mb-2"></div>
+                    <p class="text-small font-italic">Last updated 3 mins ago</p>
+                  </div>
+                  <div class="p-1 text-left card-footer font-weight-light d-flex">
+                    <span class="mr-3 d-flex align-items-center"><i class="i-Speach-Bubble-6 mr-1"></i> 12 </span>
+                    <span class="d-flex align-items-center"><i class="i-Calendar-4 mr-2"></i>03.12.2018</span>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
+        </div>
+
+    <!-- ICON BG -->
+    <div class="col-lg-3 col-md-6 col-sm-6">
+        <div class="card card-icon-bg card-icon-bg-primary o-hidden mb-4">
+          <div class="card-body text-center">
+            <i class="i-Add-User"></i>
+            <div class="content">
+              <p class="text-muted mt-2 mb-0">Welcome {{ myInfo.username }}, #{{ myInfo.id }}</p>
+              <p class="lead text-primary text-24 mb-2">205</p>
+            </div>
+          </div>
+        </div>
+    </div>
+  </div>
+</div>
