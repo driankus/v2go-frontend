@@ -96,12 +96,8 @@ export class ReservationComponent implements OnInit {
   }
 
   public makeReservation(eventCsNk, startDateTime = null, endDateTime = null) {
-    startDateTime =
-      startDateTime == null
-        ? startDateTime
-        : this.convertDateToAPIFormat(startDateTime);
-    endDateTime =
-      endDateTime == null ? endDateTime : this.convertDateToAPIFormat(endDateTime);
+    startDateTime = startDateTime == null ? startDateTime : this.convertDateToAPIFormat(startDateTime);
+    endDateTime = endDateTime == null ? endDateTime : this.convertDateToAPIFormat(endDateTime);
     this.reservationService
       .makeReservation(eventCsNk, this.evNk, startDateTime, endDateTime)
       .subscribe(
@@ -116,7 +112,7 @@ export class ReservationComponent implements OnInit {
   }
 
   public handleEvent(action: string, event: CalendarAppEvent): void {
-    if (event.title !== "RESERVED") {
+    if (event.title !== 'RESERVED') {
       const dialogRef = this.modalService.open(CalendarFormDialogComponent, {
         centered: true
       });
