@@ -26,6 +26,7 @@ export class ReservationComponent implements OnInit {
   isReserved = false;
 
   @ViewChild('eventDeleteConfirm') eventDeleteConfirm;
+  public refresh: Subject<any> = new Subject();
   public events: CalendarAppEvent[] = [];
   private today = new Date();
   private startWeekOn = this.today.getDay();
@@ -51,7 +52,7 @@ export class ReservationComponent implements OnInit {
   }
 
   convertDateToAPIFormat(date: Date): String {
-    return `${date.toISOString().split('T')[0]} ${date.toTimeString().split(' ')[0]}`;
+    return `${date.toISOString().split('T')[0]} ${date.toLocaleTimeString()}`;
   }
 
   ngOnInit() {
@@ -72,8 +73,8 @@ export class ReservationComponent implements OnInit {
 
         eventCss.forEach(event => {
           const calEvent = new CalendarAppEvent({
-            'start': new Date(event.startDateTime),
-            'end': new Date(event.endDateTime),
+            'start': new Date(event.start_datetime),
+            'end': new Date(event.end_datetime),
             'title': event.status,
             'color': {
               'secondary': this.colors[event.status]
@@ -86,6 +87,8 @@ export class ReservationComponent implements OnInit {
           });
           this.events.push(calEvent);
         });
+
+        this.refresh.next();
 
         this.dataLoaded = Promise.resolve(true);
       });
@@ -104,7 +107,7 @@ export class ReservationComponent implements OnInit {
       .subscribe(
         () => {
           this.isReserved = true; // TODO replace by toasterNotification
-          window.location.reload();
+          this.refresh.next();
         },
         error => {
           console.error(error);

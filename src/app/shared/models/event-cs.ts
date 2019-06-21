@@ -2,8 +2,8 @@ export interface EventCS {
   nk: string;
   created: string;
   updated: string;
-  startDateTime: string;
-  endDateTime: string;
+  start_datetime: string;
+  end_datetime: string;
   cs: string;
   status: string;
   ev_event_id: number;
