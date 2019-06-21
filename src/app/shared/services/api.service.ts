@@ -93,26 +93,27 @@ export class ReservationService {
   }
 
   public makeReservation(
-    event_cs_nk,
-    ev_nk,
-    custom_start_datetime,
-    custom_end_datetime
+    event_cs_nk: string,
+    ev_nk: string,
+    custom_start_datetime: Date,
+    custom_end_datetime: Date
   ): Observable<Reservation> {
-    if (custom_start_datetime && custom_end_datetime) {
-      const payLoad = {
-        event_cs_nk,
-        ev_nk,
-        custom_start_datetime,
-        custom_end_datetime
-      }
-      return this.http.post<Reservation>(
-        this.API_URL + 'reservations/custom/', payLoad
-      );
-    } else {
-      return this.http.post<Reservation>(this.API_URL + 'reservations/', {
-        event_cs_nk,
-        ev_nk
-      });
-    }
+    const payLoad = (custom_start_datetime && custom_end_datetime) ?
+                    {
+                      event_cs_nk,
+                      ev_nk,
+                      custom_start_datetime,
+                      custom_end_datetime
+                    } :
+                    {
+                      event_cs_nk,
+                      ev_nk
+                    };
+
+    const endPoint = (custom_start_datetime && custom_end_datetime) ?
+                      this.API_URL + 'reservations/custom/' :
+                      this.API_URL + 'reservations/';
+
+    return this.http.post<Reservation>(endPoint, payLoad);
   }
 }
