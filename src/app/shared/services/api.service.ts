@@ -3,7 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from './../../../environments/environment';
 import { Observable, of } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
+
 import { ChargingStation } from '../models/charging-station';
+import { UserAccountData } from '../models/user-account-data';
 
 @Injectable({ providedIn: 'root' })
 export class SearchStationsService {
@@ -45,7 +47,7 @@ export class UserAccountInfoService {
    * Get user personal info, EV, reservations, history, etc
    * @param user_pk
    */
-  getAccountInfo(user_pk: number): Observable<any> {
+  getAccountInfo(user_pk: number): Observable<UserAccountData> {
     // TODO: Update API endpoint to take user_pk as param, meaning:
     // 'my-account?user_pk=3', instead of 'my-account/3"
     // const params = new HttpParams().set('user_pk', String(user_pk));

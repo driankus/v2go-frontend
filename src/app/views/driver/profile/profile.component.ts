@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserAccountInfoService } from '../../../shared/services/api.service';
+import { ElectricVehicle } from '../../../shared/models/electric-vehicle';
+import { UserInfo } from '../../../shared/models/user-account-data';
 
 @Component({
   selector: 'app-profile',
@@ -8,10 +10,9 @@ import { UserAccountInfoService } from '../../../shared/services/api.service';
 })
 export class ProfileComponent implements OnInit {
   isLoading = true;
-  // TODO add interphaces to user-info, ev, reservation
-  myInfo: any;
-  myEvs: any;
-  myReservations: any;
+  myInfo: UserInfo;
+  myEvs: ElectricVehicle[];
+  myReservations: any[];
 
   // TODO get pk from localStorage User
   user_pk = 3;
@@ -28,14 +29,11 @@ export class ProfileComponent implements OnInit {
   getUserInfo(): void {
     this.accountService.getAccountInfo(this.user_pk)
       .subscribe(userData => {
-        console.log('#'.repeat(100), ' #userData!!!: ', userData);
         this.myInfo = userData.user;
         this.myEvs = userData.evs;
         this.myReservations = userData.reservations;
-        console.log(' #myInfo!!!: ', this.myInfo);
         this.isLoading = !this.isLoading;
       });
   }
 
 }
-
