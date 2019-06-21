@@ -59,7 +59,7 @@ export class ReservationComponent implements OnInit {
   }
 
   convertDateToAPIFormat(date: Date): String {
-    return date.toISOString().replace('T', ' ').split('.000Z')[0];
+    return `${date.toISOString().split('T')[0]} ${date.toLocaleTimeString()}`;
   }
 
   ngOnInit() {
@@ -80,8 +80,8 @@ export class ReservationComponent implements OnInit {
 
         eventCss.forEach(event => {
           const calEvent = new CalendarAppEvent({
-            'start': new Date(event.startDateTime),
-            'end': new Date(event.endDateTime),
+            'start': new Date(event.start_datetime),
+            'end': new Date(event.end_datetime),
             'title': event.status,
             'color': {
               'secondary': this.colors[event.status]
@@ -94,6 +94,8 @@ export class ReservationComponent implements OnInit {
           });
           this.events.push(calEvent);
         });
+
+        this.refresh.next();
 
         this.dataLoaded = Promise.resolve(true);
       });
