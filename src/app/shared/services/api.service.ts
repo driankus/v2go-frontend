@@ -6,6 +6,9 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { ChargingStation } from '../models/charging-station';
 import { UserAccountData } from '../models/user-account-data';
+import { User } from '../models/user';
+import { Reservation } from '../models/reservation';
+import { EventCS } from '../models/event-cs';
 
 @Injectable({ providedIn: 'root' })
 export class SearchStationsService {
@@ -27,11 +30,7 @@ export class SearchStationsService {
       const params = new HttpParams()
         .set('poi_lat', String(poiLat))
         .set('poi_lng', String(poiLng));
-      return this.http.get<ChargingStation[]>(
-        this.API_URL, { params: params }).pipe(
-          map(stationsList => stationsList.map(
-            station => ChargingStation.create(station)
-      )));
+      return this.http.get<ChargingStation[]>(this.API_URL, { params: params });
     }
   }
 }
@@ -64,5 +63,43 @@ export class UserAccountInfoService {
         // map(resp => resp.map(
         //   userInfo => ChargingStation.create(station)))
       );
+    }
+  }
+@Injectable({
+  providedIn: 'root'
+})
+export class MainService {
+  API_URL = environment.devUrl + 'stations/';
+
+  constructor(private http: HttpClient) {}
+
+  public getChargingStation(csNk: string) {
+    return this.http.get<ChargingStation>(this.API_URL + csNk + '/');
+  }
+}
+
+@Injectable({
+  providedIn: 'root'
+})
+export class ReservationService {
+  API_URL = environment.devUrl + 'volt_reservation/';
+
+  constructor(private http: HttpClient) {}
+
+  public getAvailabilities(startDateTime, endDateTime, csNk) {
+    const params = new HttpParams()
+      .set('cs_nk', csNk)
+      .set('start_datetime', startDateTime)
+      .append('end_datetime', endDateTime);
+
+    return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
+  }
+
+  public makeReservation(eventCsNk, evNk): Observable<Reservation> {
+    return this.http.post<Reservation>(this.API_URL + 'reservations/',
+      {
+        event_cs_nk: eventCsNk,
+        ev_nk: evNk
+      });
   }
 }
