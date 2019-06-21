@@ -99,14 +99,14 @@ export class ReservationService {
     custom_end_datetime
   ): Observable<Reservation> {
     if (custom_start_datetime && custom_end_datetime) {
+      const payLoad = {
+        event_cs_nk,
+        ev_nk,
+        custom_start_datetime,
+        custom_end_datetime
+      }
       return this.http.post<Reservation>(
-        this.API_URL + 'reservations/custom/',
-        {
-          event_cs_nk,
-          ev_nk,
-          custom_start_datetime,
-          custom_end_datetime
-        }
+        this.API_URL + 'reservations/custom/', payLoad
       );
     } else {
       return this.http.post<Reservation>(this.API_URL + 'reservations/', {
