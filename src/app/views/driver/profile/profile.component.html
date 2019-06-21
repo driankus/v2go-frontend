@@ -1,0 +1,130 @@
+<!-- <p> USER: {{ myInfo}}</p> -->
+<!-- <p> EVs: {{ myEvs[0].nickname }} </p>
+<p> RESERVATIONS: {{ myReservations[0] }} </p> -->
+
+<div *ngIf="isLoading" style="text-align: center;">
+  <p> app-loading-spinner comes here</p>
+</div>
+<div class="" *ngIf="!isLoading">
+  <div class="row">
+    <!-- USER INFO -->
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <h2>Account info</h2>
+      <div class="card mb-4 o-hidden">
+        <img class="card-img-top" src="./assets/images/faces/15.jpg" alt="">
+        <div class="card-body">
+          <h5 class="card-title"> {{myInfo.first_name}} {{myInfo.last_name}}</h5>
+          <p class="card-text">Joined V2Go in June 17th, 2019</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Age 28yrs</li>
+          <li class="list-group-item">Male</li>
+          <li class="list-group-item">438-888-8888</li>
+        </ul>
+        <div class="card-body">
+          <a href="#" class="card-link">pierre@v2go.io</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MY VEHICLES  -->
+    <div class="col-lg-3 col-md-6 col-sm-12">
+      <h2>My vehicles</h2>
+      <!-- Display all EVs (1 per card) -->
+      <div class="card mb-4" *ngIf="myEvs.length > 0">
+        <div 
+          *ngFor="let ev of myEvs"
+          class="card card-icon-bg card-icon-bg-primary"
+        >
+          <div class="card-body text-left">
+            <i class="i-Car-2"></i>
+            <div class="content">
+              <p class="text-muted mt-2 mb-0">{{ev.nickname}}</p>
+              <p class="lead text-primary text-24 mb-2">{{ev.model}} {{ev.manufacturer}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- No EV linked to account -->
+      <div class="card mb-4" *ngIf="myEvs.length == 0 || myEvs == undefined">
+        <div class="card card-icon-bg card-icon-bg-primary">
+          <div class="card-body text-center">
+            <i class="i-Add-User"></i>
+            <div class="content">
+              <p class="text-muted mt-2 mb-0"> No EV linked to your account </p>
+              <hr>
+              <button class="btn btn-outline-primary btn-rounded btn-sm">Add EV</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Add new EV -->
+      <div class="card mb-4">
+          <div class="col-md-12">
+            <div class="card-body text-center">
+              <div class="content">
+                <button class="btn btn-outline-primary btn-big btn-rounded btn-sm">Add new Electric Vehicle</button>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- MY RESERVATIONS  -->
+    <div class="col-lg-6 col-md-12">
+        <h2>Reservations</h2>
+        <!-- Display all Reservations (1 per row) -->
+        <div class="card mb-4" *ngIf="myReservations.length > 0">
+          <div class="card-body card-icon-bg">
+              <div class="card-title">Upcoming</div>
+              <div 
+                *ngFor="let reserve of myReservations"
+                class="d-flex flex-column flex-sm-row align-items-sm-center mb-3"
+              >
+                <i class="i-Bookmark"></i>
+                <!-- <img class="avatar-lg mb-3 mb-sm-0 rounded mr-sm-3" src="./assets/images/products/headphone-4.jpg" alt=""> -->
+                <div class="flex-grow-1">
+                    <h5 class=""><a href="">Station: {{reserve.event_cs.cs}}</a></h5>
+                    <p class="m-0 text-small text-muted">{{reserve.event_cs.start_datetime}} - {{reserve.event_cs.end_datetime}}</p>
+                    <p class="m-0">$4.5</p>
+                </div>
+                <div>
+                    <button class="btn btn-outline-primary mt-3 mb-3 m-sm-0 btn-rounded btn-sm">View details</button>
+                </div>
+              </div>
+          </div>
+        </div>
+        <!-- No Reservations Made -->
+        <div class="card mb-4" *ngIf="myReservations.length == 0 || myReservations == undefined">
+            <div class="card-body">
+                <div class="card-title">You haven't made any reservations yet</div>
+                <hr>
+                <button class="btn btn-outline-primary btn-rounded btn-sm">Reserve a Charging Station</button>
+            </div>
+        </div>
+    </div>
+
+  </div>
+
+  <!-- FAVORITE LOCATIONS -->
+  <!-- <div class="row">
+    <div class="col-md-6">
+      <h2>Favorite stations</h2>
+      <div class="card bg-dark text-white o-hidden mb-4">
+        <img class="card-img" src="./assets/images/photo-long-1.jpg" alt="Card image">
+        <div class="card-img-overlay">
+          <div class="text-center pt-4">
+            <h5 class="card-title mb-2 text-white">Park</h5>
+            <div class="separator border-top mb-2"></div>
+            <p class="text-small font-italic">Last updated 3 mins ago</p>
+          </div>
+          <div class="p-1 text-left card-footer font-weight-light d-flex">
+            <span class="mr-3 d-flex align-items-center"><i class="i-Speach-Bubble-6 mr-1"></i> 12 </span>
+            <span class="d-flex align-items-center"><i class="i-Calendar-4 mr-2"></i>03.12.2019</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div> -->
+  
+</div>
