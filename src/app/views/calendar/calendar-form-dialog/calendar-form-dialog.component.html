@@ -1,40 +1,48 @@
 <div class="card">
-  <div class="row">
-    <div class="col-md-6 form-group">
-      <h1>Start Time</h1>
-      <ngb-timepicker [formControl]="ctrl" required></ngb-timepicker>
-      <div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
-      <div class="small form-text text-danger" *ngIf="!ctrl.valid">
-        <div *ngIf="ctrl.errors['required']">Select some time during lunchtime</div>
-        <div *ngIf="ctrl.errors['tooLate']">Oh no, it's way too late</div>
-        <div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Reservation</h4>
+  </div>
+
+  <div class="modal-body">
+    <div class="row">
+      <div class="col-md-6 form-group">
+        <h1>Start Time</h1>
+        <ngb-timepicker [formControl]="ctrl" [minuteStep]="5" required></ngb-timepicker>
+        <div *ngIf="ctrl.valid" class="small form-text text-success">Great choice</div>
+        <div class="small form-text text-danger" *ngIf="!ctrl.valid">
+          <div *ngIf="ctrl.errors['required']">Select some time during lunchtime</div>
+          <div *ngIf="ctrl.errors['tooLate']">Oh no, it's way too late</div>
+          <div *ngIf="ctrl.errors['tooEarly']">It's a bit too early</div>
+        </div>
+      </div>
+
+      <div class="col-md-6 form-group">
+        <h1>End Time</h1>
+        <ngb-timepicker [formControl]="nextCtrl" [minuteStep]="5" required></ngb-timepicker>
+        <div *ngIf="nextCtrl.valid" class="small form-text text-success">Great choice</div>
+        <div class="small form-text text-danger" *ngIf="!nextCtrl.valid">
+          <div *ngIf="nextCtrl.errors['required']">Select some time during lunchtime</div>
+          <div *ngIf="nextCtrl.errors['tooLate']">Oh no, it's way too late</div>
+          <div *ngIf="nextCtrl.errors['tooEarly']">It's a bit too early</div>
+          <div *ngIf="nextCtrl.errors['invalid']">End Date cannot be before start date</div>
+        </div>
+      </div>
+
+      <div class="col-md-6 form-group">
+        <h1>Charge Time</h1>
+        <h3>{{nextCtrl.value.hour - ctrl.value.hour}} hour(s)
+          {{((nextCtrl.value.hour - ctrl.value.hour)* 60 + nextCtrl.value.minute - ctrl.value.minute) % 60}} minute(s)
+        </h3>
+      </div>
+
+      <div class="col-md-6 form-group">
+        <h1>Total cost</h1>
+        <h3>$
+          {{(((nextCtrl.value.hour - ctrl.value.hour)* 60 + nextCtrl.value.minute - ctrl.value.minute) * (1/ 60)).toFixed(2)}}
+        </h3>
       </div>
     </div>
-  
-    <div class="col-md-6 form-group">
-      <h1>End Time</h1>
-      <ngb-timepicker [formControl]="nextCtrl" required></ngb-timepicker>
-      <div *ngIf="nextCtrl.valid" class="small form-text text-success">Great choice</div>
-      <div class="small form-text text-danger" *ngIf="!nextCtrl.valid">
-        <div *ngIf="nextCtrl.errors['required']">Select some time during lunchtime</div>
-        <div *ngIf="nextCtrl.errors['tooLate']">Oh no, it's way too late</div>
-        <div *ngIf="nextCtrl.errors['tooEarly']">It's a bit too early</div>
-        <div *ngIf="nextCtrl.errors['invalid']">End Date cannot be before start date</div>
-      </div>
-    </div>
-  
-    <div class="col-md-6 form-group">
-      <h1>Charge Time</h1>
-      <h3>{{nextCtrl.value.hour - ctrl.value.hour}} hour(s)
-        {{((nextCtrl.value.hour - ctrl.value.hour)* 60 + nextCtrl.value.minute - ctrl.value.minute) % 60}} minute(s)
-      </h3>
-    </div>
-  
-    <div class="col-md-6 form-group">
-      <h1>Total cost</h1>
-      <h3>$ {{(((nextCtrl.value.hour - ctrl.value.hour)* 60 + nextCtrl.value.minute - ctrl.value.minute) * (1/ 60)).toFixed(2)}}</h3>
-    </div>
-  
+
     <div class="modal-footer">
       <button [disabled]="eventForm.invalid" class="btn btn-primary btn-rounded" [routerLink]="['../driver']"
         (click)="activeModal.close({action: 'reserve', event: eventForm.value, startTime: ctrl.value, endTime: nextCtrl.value})">Reserve</button>

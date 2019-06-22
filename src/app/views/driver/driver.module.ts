@@ -8,6 +8,7 @@ import { AgmCoreModule } from '@agm/core';
 import { DriverRoutingModule } from './driver-routing.module';
 import { HomeMapComponent } from '../home-map/home-map.component';
 import { StationDetailComponent } from '../home-map/station-detail/station-detail.component';
+import { ProfileComponent } from './profile/profile.component';
 import { ReservationComponent } from '../reservation/reservation.component';
 import { CalendarModule, CalendarUtils, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
@@ -33,7 +34,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
       DriverRoutingModule
     ],
     providers: [CalendarUtils],
-    declarations: [ HomeMapComponent, StationDetailComponent, ReservationComponent, CalendarFormDialogComponent ],
+    declarations: [ HomeMapComponent, StationDetailComponent, ProfileComponent, ReservationComponent, CalendarFormDialogComponent ],
     entryComponents: [CalendarFormDialogComponent]
   })
 export class DriverModule { }

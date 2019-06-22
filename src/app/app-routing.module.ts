@@ -14,16 +14,33 @@ const adminRoutes: Routes = [
     {
       path: 'icons',
       loadChildren: './views/icons/icons.module#IconsModule'
-    }
+    },
+    {
+      path: 'pages',
+      loadChildren: './views/pages/pages.module#PagesModule'
+    },
+    {
+      path: 'uikits',
+      loadChildren: './views/ui-kits/ui-kits.module#UiKitsModule'
+    },
+    {
+      path: 'forms',
+      loadChildren: './views/forms/forms.module#AppFormsModule'
+    },
+    {
+      path: 'calendar',
+      loadChildren: './views/calendar/calendar.module#CalendarAppModule'
+    },
 ];
 
 const routes: Routes = [
+  // Default rout
   {
     path: '',
     redirectTo: 'driver',
     pathMatch: 'full'
   },
-  // AUTH Routs
+  // AUTH Rout
   {
     path: '',
     component: AuthLayoutComponent,
@@ -44,20 +61,11 @@ const routes: Routes = [
         path: '',
         loadChildren: './views/driver/driver.module#DriverModule'
       },
-      {
-        path: 'forms',
-        loadChildren: './views/forms/forms.module#AppFormsModule'
-      },
-      {
-        path: 'calendar',
-        loadChildren: './views/calendar/calendar.module#CalendarAppModule'
-      },
     ]
   },
   {
     path: '',
     component: AdminLayoutSidebarLargeComponent,
-    canActivate: [AuthGuard],
     children: adminRoutes
   },
   {

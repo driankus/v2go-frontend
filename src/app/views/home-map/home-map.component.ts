@@ -72,6 +72,7 @@ export class HomeMapComponent implements OnInit {
 
   ngOnInit() {
     this.searchStationsNearMe();
+    console.log('# DRIVER: ', this.driver);
   }
 
   onSubmit() {
@@ -92,7 +93,6 @@ export class HomeMapComponent implements OnInit {
     this.searchService.findStations(lat, lng)
       .subscribe(stationsList => {
         this.stationsList = stationsList;
-        console.log('#'.repeat(100), ' #stationsList !!!: ', stationsList);
       });
   }
   /**
@@ -106,8 +106,8 @@ export class HomeMapComponent implements OnInit {
     this.locationChosen = true;
   }
   /**
-   * Method get stations near User's location (navigator, if not avail, use MTL coords)
-   * then, displays user ans CS on map.
+   * Search stations near User's location (from navigator, if not avail 
+   * use MTL coords) then, displays driver and CSs on map.
    */
   searchStationsNearMe(): void {
     getCurrentPosition.subscribe( position => {
@@ -115,11 +115,24 @@ export class HomeMapComponent implements OnInit {
         this.poiLng = position.coords.longitude;
         // Get stations near User's location
         this.findStations(this.poiLat, this.poiLng);
+        this.displayUser(this.poiLat, this.poiLng);
       }, error => {
         console.log('# ERROR at searchStationsNearMe(). Message: ', error);
         // Get stations near default MTL coords
         this.findStations(this.poiLat, this.poiLng);
     });
+  }
+  /**
+   *  Method to create a marker and display user locaiton on map
+   */
+  displayUser(lat, lng) {
+    console.log('# displayUser(): ', lat, lng);
+    this.driver = new Marker(
+      lat,
+      lng,
+      'D',
+      this.driverIcon
+    );
   }
 }
 
