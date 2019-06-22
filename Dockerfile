@@ -1,7 +1,5 @@
-# Front End Dockerfile
-
 # base image
-FROM node:11.10.1-alpine
+FROM node:10.16.0-alpine
 
 # install chrome
 RUN echo @edge http://nl.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories \
@@ -27,3 +25,6 @@ RUN npm install
 
 # copy the client directory into the container
 COPY . /usr/src/app
+
+# For deployment
+# RUN npm run build
