@@ -98,17 +98,19 @@ export class ReservationService {
     custom_start_datetime: Date,
     custom_end_datetime: Date
   ): Observable<Reservation> {
-    const payLoad = (custom_start_datetime && custom_end_datetime) ?
-                    {
-                      event_cs_nk,
-                      ev_nk,
-                      custom_start_datetime,
-                      custom_end_datetime
-                    } :
-                    {
-                      event_cs_nk,
-                      ev_nk
-                    };
+    const optionA = {
+      event_cs_nk,
+      ev_nk,
+      custom_start_datetime,
+      custom_end_datetime
+    };
+
+    const optionB = {
+      event_cs_nk,
+      ev_nk
+    };
+
+    const payLoad = (custom_start_datetime && custom_end_datetime) ? optionA : optionB;
 
     const endPoint = (custom_start_datetime && custom_end_datetime) ?
                       this.API_URL + 'reservations/custom/' :

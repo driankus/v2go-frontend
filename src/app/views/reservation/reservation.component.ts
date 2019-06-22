@@ -111,6 +111,12 @@ export class ReservationComponent implements OnInit {
       );
   }
 
+  /**
+   * This method is called when a user
+   * clicks on an event within the calendar
+   * action: The action of the event, which for now is Reserved
+   * event: Passing the event that is being handled
+   */
   public handleEvent(action: string, event: CalendarAppEvent): void {
     if (event.title !== 'RESERVED') {
       const dialogRef = this.modalService.open(CalendarFormDialogComponent, {
@@ -140,6 +146,10 @@ export class ReservationComponent implements OnInit {
           );
 
           if (dialogAction === 'reserve') {
+            // If the start and end date time are the
+            // same as the event, then there is no need
+            // to pass them and reserve the entire event
+            // Otherwise it'll be a custom reservation
             if (event.start.getTime() === startDateTime.getTime() && event.end.getTime() === endDateTime.getTime()) {
               this.makeReservation(event.meta.notes);
             } else {
