@@ -14,7 +14,7 @@ export class StationDetailComponent implements OnInit {
   @Input() station: ChargingStation;
   @Output() unselectStation = new EventEmitter<undefined>();
   stationAvailabilities: EventCS[];
-  public refresh: Subject<any> = new Subject();
+  public refresh: Subject<any> = new Subject(); // TODO need to figure out how to use this
   evNk = '55f002a97554ae0a6ffd021311eca1b5';
 
   constructor(
@@ -32,7 +32,6 @@ export class StationDetailComponent implements OnInit {
 
   setUp(): void {
     const today = new Date();
-    console.log(this.station);
     this.apiService
       .getAvailabilities(
         this.toProperString(new Date(today.getFullYear(), today.getMonth(), today.getDate())),
