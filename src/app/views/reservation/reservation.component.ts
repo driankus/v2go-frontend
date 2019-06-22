@@ -10,7 +10,6 @@ import { Subject } from 'rxjs';
 import { CalendarAppEvent } from 'src/app/shared/models/calendar-event.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarFormDialogComponent } from '../calendar/calendar-form-dialog/calendar-form-dialog.component';
-import { Utils } from 'src/app/shared/utils';
 import { ToastrService } from 'ngx-toastr';
 
 @Component({
