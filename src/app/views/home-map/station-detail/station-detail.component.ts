@@ -10,7 +10,7 @@ import { Subject } from 'rxjs';
   templateUrl: './station-detail.component.html',
   styleUrls: ['./station-detail.component.scss']
 })
-export class StationDetailComponent {
+export class StationDetailComponent implements OnInit {
   @Input() station: ChargingStation;
   @Output() unselectStation = new EventEmitter<undefined>();
   stationAvailabilities: EventCS[];
@@ -25,6 +25,7 @@ export class StationDetailComponent {
   toProperString(date: Date) {
     return date.toISOString().split('T')[0] + ' ' + date.toLocaleTimeString();
   }
+
   ngOnInit() {
     this.setUp();
   }
@@ -34,22 +35,13 @@ export class StationDetailComponent {
     console.log(this.station);
     this.apiService
       .getAvailabilities(
-        this.toProperString(
-          new Date(today.getFullYear(), today.getMonth(), today.getDate())
-        ),
-        this.toProperString(
-          new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)
-        ),
+        this.toProperString(new Date(today.getFullYear(), today.getMonth(), today.getDate())),
+        this.toProperString(new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1)),
         this.station.nk
       )
       .subscribe(
-        eventCss => {
-          this.stationAvailabilities = eventCss;
-          console.log(eventCss);
-        },
-        error => {
-          console.log(error);
-        }
+        eventCss => { this.stationAvailabilities = eventCss; },
+        error => { console.log(error); }
       );
   }
 
