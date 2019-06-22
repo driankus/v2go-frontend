@@ -8,15 +8,8 @@ import {
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
 import { CalendarAppEvent } from 'src/app/shared/models/calendar-event.model';
-import {
-  CalendarEventAction,
-  CalendarEventTimesChangedEvent,
-  CalendarEvent
-} from 'angular-calendar';
-import { CalendarAppService } from '../calendar/calendar-app.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarFormDialogComponent } from '../calendar/calendar-form-dialog/calendar-form-dialog.component';
-import { Utils } from 'src/app/shared/utils';
 
 @Component({
   selector: 'app-reservation',
@@ -45,8 +38,8 @@ export class ReservationComponent implements OnInit {
   constructor(
     private reservationService: ReservationService,
     private route: ActivatedRoute,
-    private mainService: MainService
-  ) {
+    private mainService: MainService,
+    private modalService: NgbModal) {
     this.route.params.subscribe(params => (this.csNk = params.nk));
   }
 
@@ -102,14 +95,71 @@ export class ReservationComponent implements OnInit {
     // Get CS info and availability
   }
 
-  public makeReservation(eventCsNk) {
-    this.reservationService.makeReservation(eventCsNk, this.evNk).subscribe(
-      () => {
-        this.isReserved = true; // TODO replace by toasterNotification
-      },
-      error => {
-        console.error(error);
-      }
-    );
+  public makeReservation(eventCsNk, startDateTime = null, endDateTime = null) {
+    startDateTime = startDateTime == null ? startDateTime : this.convertDateToAPIFormat(startDateTime);
+    endDateTime = endDateTime == null ? endDateTime : this.convertDateToAPIFormat(endDateTime);
+    this.reservationService
+      .makeReservation(eventCsNk, this.evNk, startDateTime, endDateTime)
+      .subscribe(
+        () => {
+          this.isReserved = true; // TODO replace by toasterNotification
+          this.refresh.next();
+        },
+        error => {
+          console.error(error);
+        }
+      );
+  }
+
+  /**
+   * This method is called when a user
+   * clicks on an event within the calendar
+   * action: The action of the event, which for now is Reserved
+   * event: Passing the event that is being handled
+   */
+  public handleEvent(action: string, event: CalendarAppEvent): void {
+    if (event.title !== 'RESERVED') {
+      const dialogRef = this.modalService.open(CalendarFormDialogComponent, {
+        centered: true
+      });
+      dialogRef.componentInstance.data = { event, action };
+      dialogRef.result
+        .then(res => {
+          if (!res) {
+            return;
+          }
+          const dialogAction = res.action;
+          const responseEvent = res.event;
+          const startDateTime = new Date(
+            event.start.getFullYear(),
+            event.start.getMonth(),
+            event.start.getDate(),
+            res.startTime.hour,
+            res.startTime.minute
+          );
+          const endDateTime = new Date(
+            event.end.getFullYear(),
+            event.end.getMonth(),
+            event.end.getDate(),
+            res.endTime.hour,
+            res.endTime.minute
+          );
+
+          if (dialogAction === 'reserve') {
+            // If the start and end date time are the
+            // same as the event, then there is no need
+            // to pass them and reserve the entire event
+            // Otherwise it'll be a custom reservation
+            if (event.start.getTime() === startDateTime.getTime() && event.end.getTime() === endDateTime.getTime()) {
+              this.makeReservation(event.meta.notes);
+            } else {
+              this.makeReservation(event.meta.notes, startDateTime, endDateTime);
+            }
+          }
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
 }

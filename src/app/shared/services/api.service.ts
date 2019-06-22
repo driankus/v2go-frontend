@@ -13,9 +13,7 @@ import { EventCS } from '../models/event-cs';
 @Injectable({ providedIn: 'root' })
 export class SearchStationsService {
   private API_URL = environment.devUrl + 'volt_finder/near-poi';
-  constructor(
-    private http: HttpClient,
-  ) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Search CS by calling the 'API/near-poi' endpoint.
@@ -38,9 +36,7 @@ export class SearchStationsService {
 @Injectable({ providedIn: 'root' })
 export class UserAccountInfoService {
   private API_URL = environment.devUrl + 'my-account';
-  constructor(
-    private http: HttpClient,
-  ) { }
+  constructor(private http: HttpClient) {}
 
   /**
    * Get user personal info, EV, reservations, history, etc
@@ -58,13 +54,14 @@ export class UserAccountInfoService {
     //   );
 
     const modifAPI = this.API_URL + '/' + String(user_pk);
-    return this.http.get<any>( modifAPI ).pipe(
-        map(userData => userData)
-        // map(resp => resp.map(
-        //   userInfo => ChargingStation.create(station)))
-      );
-    }
+    return this.http.get<any>(modifAPI).pipe(
+      map(userData => userData)
+      // map(resp => resp.map(
+      //   userInfo => ChargingStation.create(station)))
+    );
   }
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -95,11 +92,30 @@ export class ReservationService {
     return this.http.get<EventCS[]>(this.API_URL + 'station-availabilities/', {params: params});
   }
 
-  public makeReservation(eventCsNk, evNk): Observable<Reservation> {
-    return this.http.post<Reservation>(this.API_URL + 'reservations/',
-      {
-        event_cs_nk: eventCsNk,
-        ev_nk: evNk
-      });
+  public makeReservation(
+    event_cs_nk: string,
+    ev_nk: string,
+    custom_start_datetime: Date,
+    custom_end_datetime: Date
+  ): Observable<Reservation> {
+    const optionA = {
+      event_cs_nk,
+      ev_nk,
+      custom_start_datetime,
+      custom_end_datetime
+    };
+
+    const optionB = {
+      event_cs_nk,
+      ev_nk
+    };
+
+    const payLoad = (custom_start_datetime && custom_end_datetime) ? optionA : optionB;
+
+    const endPoint = (custom_start_datetime && custom_end_datetime) ?
+                      this.API_URL + 'reservations/custom/' :
+                      this.API_URL + 'reservations/';
+
+    return this.http.post<Reservation>(endPoint, payLoad);
   }
 }
