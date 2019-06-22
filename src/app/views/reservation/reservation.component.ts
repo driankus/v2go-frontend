@@ -10,6 +10,7 @@ import { Subject } from 'rxjs';
 import { CalendarAppEvent } from 'src/app/shared/models/calendar-event.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { CalendarFormDialogComponent } from '../calendar/calendar-form-dialog/calendar-form-dialog.component';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-reservation',
@@ -39,7 +40,9 @@ export class ReservationComponent implements OnInit {
     private reservationService: ReservationService,
     private route: ActivatedRoute,
     private mainService: MainService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private toastr: ToastrService
+  ) {
     this.route.params.subscribe(params => (this.csNk = params.nk));
   }
 
@@ -103,6 +106,7 @@ export class ReservationComponent implements OnInit {
       .subscribe(
         () => {
           this.isReserved = true; // TODO replace by toasterNotification
+          this.toastr.success('Reservation made', 'Success!', {progressBar: true});
           this.refresh.next();
         },
         error => {
