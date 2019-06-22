@@ -25,5 +25,15 @@
         </div>
       </div>
     </div>
+
+    <div *ngFor="let available of stationAvailabilities">
+      <div *ngIf="available.status === 'AVAILABLE'" class="card">
+        <div class="card-body">Available from {{available.start_datetime.split(' ')[1]}} - {{available.end_datetime.split(' ')[1]}}</div>
+        <button
+        class="btn btn-outline-primary btn-rounded btn-sm"
+        (click)="makeReservation(available.nk)"
+        >Reserve</button>
+      </div>
+    </div>
   </div>
 </div>
