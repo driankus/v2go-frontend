@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ChargingStation } from '../../../shared/models/charging-station';
 import { ToastrService } from 'ngx-toastr';
-import { ReservationService } from 'src/app/shared/services/api.service';
+import { ReservationService, UserAccountInfoService } from 'src/app/shared/services/api.service';
 import { EventCS } from 'src/app/shared/models/event-cs';
 import { Subject } from 'rxjs';
 
@@ -15,11 +15,12 @@ export class StationDetailComponent implements OnInit {
   @Output() unselectStation = new EventEmitter<undefined>();
   stationAvailabilities: EventCS[];
   public refresh: Subject<any> = new Subject(); // TODO need to figure out how to use this
-  evNk = '55f002a97554ae0a6ffd021311eca1b5';
+  evNk: string;
 
   constructor(
     private apiService: ReservationService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private accountService: UserAccountInfoService,
   ) {}
 
   toProperString(date: Date) {
@@ -49,16 +50,22 @@ export class StationDetailComponent implements OnInit {
   }
 
   makeReservation(eventCsNk: string): void {
-    this.apiService.makeReservation(eventCsNk, this.evNk, null, null).subscribe(
-      reservation => {
-        this.backToResults();
-        this.toastr.success('Reservation made', 'Success!', {
-          progressBar: true
-        });
-      },
-      error => {
-        console.log(error);
-      }
-    );
+    this.accountService.getAccountInfo(JSON.parse(localStorage.getItem('userData'))['id'])
+    .subscribe(userData => {
+      console.log(this.evNk);
+      this.evNk = userData.evs[0].nk;
+
+      this.apiService.makeReservation(eventCsNk, this.evNk, null, null).subscribe(
+        reservation => {
+          this.backToResults();
+          this.toastr.success('Reservation made', 'Success!', {
+            progressBar: true
+          });
+        },
+        error => {
+          console.log(error);
+        }
+      );
+    });
   }
 }

@@ -15,7 +15,7 @@ export class ProfileComponent implements OnInit {
   myReservations: any[];
 
   // TODO get pk from localStorage User
-  user_pk = 3;
+  userPk = JSON.parse(localStorage.getItem('userData'))['id'];
 
   constructor(
     private accountService: UserAccountInfoService,
@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserInfo(): void {
-    this.accountService.getAccountInfo(this.user_pk)
+    this.accountService.getAccountInfo(this.userPk)
       .subscribe(userData => {
         this.myInfo = userData.user;
         this.myEvs = userData.evs;
