@@ -12,7 +12,7 @@ import { EventCS } from '../models/event-cs';
 
 @Injectable({ providedIn: 'root' })
 export class SearchStationsService {
-  private API_URL = environment.devUrl + 'volt_finder/near-poi';
+  private API_URL = environment.API_URL + 'volt_finder/near-poi';
   constructor(private http: HttpClient) {}
 
   /**
@@ -35,7 +35,7 @@ export class SearchStationsService {
 
 @Injectable({ providedIn: 'root' })
 export class UserAccountInfoService {
-  private API_URL = environment.devUrl + 'my-account';
+  private API_URL = environment.API_URL + 'my-account';
   constructor(private http: HttpClient) {}
 
   /**
@@ -66,7 +66,7 @@ export class UserAccountInfoService {
   providedIn: 'root'
 })
 export class MainService {
-  API_URL = environment.devUrl + 'stations/';
+  API_URL = environment.API_URL + 'stations/';
 
   constructor(private http: HttpClient) {}
 
@@ -79,7 +79,7 @@ export class MainService {
   providedIn: 'root'
 })
 export class ReservationService {
-  API_URL = environment.devUrl + 'volt_reservation/';
+  API_URL = environment.API_URL + 'volt_reservation/';
 
   constructor(private http: HttpClient) {}
 

@@ -6,41 +6,14 @@ import { DriverLayoutComponent } from './shared/components/layouts/driver-layout
 import { AdminLayoutSidebarLargeComponent } from './shared/components/layouts/admin-layout-sidebar-large/admin-layout-sidebar-large.component';
 import { AuthComponent } from './views/auth/auth.component';
 
-const adminRoutes: Routes = [
-    {
-      path: 'dashboard',
-      loadChildren: './views/dashboard/dashboard.module#DashboardModule'
-    },
-    {
-      path: 'icons',
-      loadChildren: './views/icons/icons.module#IconsModule'
-    },
-    {
-      path: 'pages',
-      loadChildren: './views/pages/pages.module#PagesModule'
-    },
-    {
-      path: 'uikits',
-      loadChildren: './views/ui-kits/ui-kits.module#UiKitsModule'
-    },
-    {
-      path: 'forms',
-      loadChildren: './views/forms/forms.module#AppFormsModule'
-    },
-    {
-      path: 'calendar',
-      loadChildren: './views/calendar/calendar.module#CalendarAppModule'
-    },
-];
-
 const routes: Routes = [
-  // Default rout
+  // Default route
   {
     path: '',
     redirectTo: 'driver',
     pathMatch: 'full'
   },
-  // AUTH Rout
+  // AUTH Route
   {
     path: '',
     component: AuthLayoutComponent,
@@ -51,7 +24,7 @@ const routes: Routes = [
       },
     ]
   },
-  // Driver Routs
+  // Driver Routes
   {
     path: 'driver',
     component: DriverLayoutComponent,
@@ -62,11 +35,6 @@ const routes: Routes = [
         loadChildren: './views/driver/driver.module#DriverModule'
       },
     ]
-  },
-  {
-    path: '',
-    component: AdminLayoutSidebarLargeComponent,
-    children: adminRoutes
   },
   {
     path: '**',

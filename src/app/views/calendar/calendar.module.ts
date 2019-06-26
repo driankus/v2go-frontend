@@ -6,7 +6,7 @@ import { ColorPickerModule } from 'ngx-color-picker';
 
 import { CalendarRoutingModule } from './calendar-routing.module';
 import { CalendarComponent } from './calendar/calendar.component';
-import { CalendarFormDialogComponent } from './calendar-form-dialog/calendar-form-dialog.component';
+// import { CalendarFormDialogComponent } from './calendar-form-dialog/calendar-form-dialog.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -22,7 +22,10 @@ import { ReactiveFormsModule } from '@angular/forms';
     }),
     CalendarRoutingModule
   ],
-  declarations: [CalendarComponent, CalendarFormDialogComponent],
-  entryComponents: [CalendarFormDialogComponent]
+  declarations: [
+    CalendarComponent,
+    // CalendarFormDialogComponent
+  ],
+  // entryComponents: [CalendarFormDialogComponent]
 })
 export class CalendarAppModule { }
