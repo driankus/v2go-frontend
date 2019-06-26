@@ -28,6 +28,7 @@ export class StationDetailComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.getEvNk();
     this.setUp();
   }
 
@@ -49,24 +50,27 @@ export class StationDetailComponent implements OnInit {
     this.unselectStation.emit(undefined);
   }
 
-  makeReservation(eventCsNk: string): void {
+  getEvNk() {
     const userId = JSON.parse(localStorage.getItem('userData'))['id'];
     this.accountService.getAccountInfo(userId)
     .subscribe(userData => {
-      console.log(this.evNk);
       this.evNk = userData.evs[0].nk;
-
-      this.apiService.makeReservation(eventCsNk, this.evNk, null, null).subscribe(
-        reservation => {
-          this.backToResults();
-          this.toastr.success('Reservation made', 'Success!', {
-            progressBar: true
-          });
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    }, error => {
+      console.log(error);
     });
+  }
+
+  makeReservation(eventCsNk: string): void {
+    this.apiService.makeReservation(eventCsNk, this.evNk, null, null).subscribe(
+      () => {
+        this.backToResults();
+        this.toastr.success('Reservation made', 'Success!', {
+          progressBar: true
+        });
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }
