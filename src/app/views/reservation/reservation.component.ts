@@ -3,7 +3,8 @@ import { ChargingStation } from '../../shared/models/charging-station';
 import { EventCS } from '../../shared/models/event-cs';
 import {
   ReservationService,
-  MainService
+  MainService,
+  UserAccountInfoService
 } from '../../shared/services/api.service';
 import { ActivatedRoute } from '@angular/router';
 import { Subject } from 'rxjs';
@@ -19,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ReservationComponent implements OnInit {
   eventCss: EventCS[];
-  evNk = '55f002a97554ae0a6ffd021311eca1b5';
+  evNk: string;
   csNk: string;
   chargingStation: ChargingStation;
   dataLoaded: Promise<boolean>;
@@ -41,7 +42,8 @@ export class ReservationComponent implements OnInit {
     private route: ActivatedRoute,
     private mainService: MainService,
     private modalService: NgbModal,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private accountService: UserAccountInfoService,
   ) {
     this.route.params.subscribe(params => (this.csNk = params.nk));
   }
@@ -59,6 +61,12 @@ export class ReservationComponent implements OnInit {
   }
 
   ngOnInit() {
+    const userId = JSON.parse(localStorage.getItem('userData'))['id'];
+    this.accountService.getAccountInfo(userId)
+      .subscribe(userData => {
+        this.evNk = userData.evs[0].nk;
+      });
+
     this.mainService
       .getChargingStation(this.csNk)
       .subscribe(chargingStation => {
