@@ -20,7 +20,7 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ReservationComponent implements OnInit {
   eventCss: EventCS[];
-  evNk = '55f002a97554ae0a6ffd021311eca1b5';
+  evNk: string;
   csNk: string;
   chargingStation: ChargingStation;
   dataLoaded: Promise<boolean>;
@@ -61,7 +61,8 @@ export class ReservationComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.accountService.getAccountInfo(JSON.parse(localStorage.getItem('userData'))['id'])
+    const userId = JSON.parse(localStorage.getItem('userData'))['id'];
+    this.accountService.getAccountInfo(userId)
       .subscribe(userData => {
         this.evNk = userData.evs[0].nk;
       });

@@ -50,7 +50,8 @@ export class StationDetailComponent implements OnInit {
   }
 
   makeReservation(eventCsNk: string): void {
-    this.accountService.getAccountInfo(JSON.parse(localStorage.getItem('userData'))['id'])
+    const userId = JSON.parse(localStorage.getItem('userData'))['id'];
+    this.accountService.getAccountInfo(userId)
     .subscribe(userData => {
       console.log(this.evNk);
       this.evNk = userData.evs[0].nk;
