@@ -34,7 +34,8 @@ export class ReservationComponent implements OnInit {
   private startWeekOn = this.today.getDay();
   private colors = {
     'AVAILABLE': '#9ACD32',
-    'RESERVED': '#FFA07A'
+    'RESERVED': '#FFA07A',
+    'COMPLETED': '#DCDCDC'
   };
 
   constructor(
