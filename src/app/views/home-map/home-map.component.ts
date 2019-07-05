@@ -82,10 +82,11 @@ export class HomeMapComponent implements OnInit {
             return;
           }
 
-          // set latitude, longitude and zoom
-          // this.latitude = place.geometry.location.lat();
-          // this.longitude = place.geometry.location.lng();
-          // this.zoom = 12;
+          // Update lat/lng and zoom. Turn location marker on
+          this.poiLat = place.geometry.location.lat();
+          this.poiLng = place.geometry.location.lng();
+          this.zoom = 12;
+          this.locationChosen = true;
         });
       });
     });
@@ -94,6 +95,7 @@ export class HomeMapComponent implements OnInit {
   onSubmit() {
     this.loading = true;
     setTimeout(() => {
+      console.log('# Go! search stations at:', this.poiLat, this.poiLng);
       this.loading = false;
       this.findStations(this.poiLat, this.poiLng);
       // this.toastr.success('Profile updated.', 'Success!', {progressBar: true});
@@ -107,6 +109,7 @@ export class HomeMapComponent implements OnInit {
    * @param lat, lng
    */
   findStations(lat: number, lng: number): void {
+    console.log('# findStations at:', this.poiLat, this.poiLng);
     this.searchService.findStations(lat, lng)
       .subscribe(stationsList => {
         this.stationsList = stationsList;
