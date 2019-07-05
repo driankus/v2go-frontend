@@ -62,11 +62,16 @@ export class HomeMapComponent implements OnInit {
     // Search stations based on my location (browser enabled)
     this.searchStationsNearMe();
 
+    // Place search options
+    const placeOptions = {
+      types: ['address'], // limit search to addresses
+      componentRestrictions: {country: 'ca'}
+    };
+
     // Load Places Autocomplete
     this.mapsAPILoader.load().then(() => {
-      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ['address'] // limit search to addresses
-      });
+      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, placeOptions);
+
       autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
           // Get place result
