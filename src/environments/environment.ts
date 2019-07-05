@@ -5,8 +5,7 @@
 export const environment = {
   production: false,
   GOOGLE_API_KEY: 'AIzaSyDn_yRSRRpEzuyW2X1hS4hlc7Rhdw9l5w0',
-  API_URL: 'http://localhost:8888/api/v1.0-pre-alpha/'
-  // API_URL: 'http://localhost:1337/api/v1.0-pre-alpha/'
+  API_URL: 'http://localhost:1337/api/v1.0-pre-alpha/'
 };
 
 /*
