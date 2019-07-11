@@ -29,7 +29,8 @@ import { ColorPickerModule } from 'ngx-color-picker';
         useFactory: adapterFactory
       }),
       AgmCoreModule.forRoot({
-        apiKey: environment.GOOGLE_API_KEY
+        apiKey: environment.GOOGLE_API_KEY,
+        libraries: ['places']
       }),
       DriverRoutingModule
     ],

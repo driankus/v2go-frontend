@@ -41,7 +41,7 @@ interface ISidebarState {
 })
 export class NavigationService {
     public sidebarState: ISidebarState = {
-        sidenavOpen: true,
+        sidenavOpen: false,
         childnavOpen: false
     };
     constructor() {

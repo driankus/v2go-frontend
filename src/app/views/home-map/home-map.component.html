@@ -1,19 +1,21 @@
 <div class="row">
   <!-- Search/Results side-bar -->
-  <div class="col-lg-3 col-md-6 col-sm-6">
+  <div class="col-lg-3 col-md-4">
     <div class="card">
       <div class="card-body">
-        <div class="card-title">CS by coordinates</div>
+        <!-- <form 
+          #requestForm="ngForm" -->
         <form 
-        #requestForm="ngForm" 
-        novalidate 
-        (ngSubmit)="onSubmit()"
+          novalidate
+          (ngSubmit)="onSubmit()"
         >
           <div class="form-group">
-            <input type="text" class="form-control" [(ngModel)]="poiLat" name="poiLat">
-          </div>
-          <div class="form-group">
-            <input type="text" class="form-control" [(ngModel)]="poiLng" name="poiLng">
+            <input
+              class="form-control"
+              #search [formControl]="searchControl"
+              placeholder="search for location"
+              autocorrect="off" autocapitalize="off" spellcheck="off"
+            >
           </div>
           <button type="submit" value="Submit" class="btn btn-primary pd-x-20">Search</button>
         </form>
@@ -24,8 +26,9 @@
     [station]="selectedStation"
     (unselectStation)="selectedStation=$event"
     ></app-station-detail>
+
     <ng-template #stationResult>
-      <div class="card">
+      <div class="card scroll">
           <div 
           class="card-body" 
           *ngIf="stationsList !== undefined && stationsList.length > 0 ; else noStationsFound"
@@ -36,14 +39,12 @@
             class="d-flex align-items-left border-bottom-dotted-dim pb-3 mb-3"
             >
               <div class="flex-grow-1">
-                <h6 class="m-0">CS {{station.name}}</h6>
-                <p class="m-0 text-small text-muted">{{station.address}}</p>
-                <div>
-                  <button 
+                <button 
                   class="btn btn-outline-primary btn-rounded btn-sm"
                   (click)="selectedStation=station"
-                  >Detail</button>
-                </div>
+                  >Station {{station.name}}
+                </button>
+                <p class="m-0 text-small text-muted">{{station.address}}</p>
               </div>
             </div>
           </div>
@@ -56,12 +57,12 @@
                 </div>
               </div>          
           </ng-template>
-        </div>
+      </div>
     </ng-template>
   </div>
 
   <!-- Map -->
-  <div class="col-lg-9 col-md-6 col-sm-6">
+  <div class="col-lg-9 col-md-8">
     <agm-map 
     [latitude]="poiLat" 
     [longitude]="poiLng" 
