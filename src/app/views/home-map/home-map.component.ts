@@ -1,18 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+/// <reference types="@types/googlemaps" />
+import { Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Observable } from 'rxjs';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormControl, FormGroup, FormBuilder } from '@angular/forms';
 import { SearchStationsService } from '../../shared/services/api.service';
 import { ChargingStation } from '../../shared/models/charging-station';
 import { ToastrService } from 'ngx-toastr';
+import { MapsAPILoader } from '@agm/core';
+import { Marker, iconPoi, iconDriver } from './map-utils';
 
-class Marker {
-  constructor(
-    public lat: number,
-    public lng: number,
-    public label?: string,
-    public icon?: any
-  ) {}
-}
+// TODO move this bellow (figure how to address complaint message)
 // Observable gets current user geolocation from navigator.
 const getCurrentPosition = new Observable<Position>(observer => {
   if ('geolocation' in navigator) {
@@ -28,51 +24,72 @@ const getCurrentPosition = new Observable<Position>(observer => {
   }
 });
 
-/**
- * HomeMapComponent
- */
 @Component({
   selector: 'app-home-map',
   templateUrl: './home-map.component.html',
   styleUrls: ['./home-map.component.scss']
 })
 export class HomeMapComponent implements OnInit {
-  loading: boolean;
-  selectedStation: ChargingStation; // for station detail
-  stationsList: ChargingStation[];
 
-  // Map params
-  driver: Marker;
-  locationChosen = false;
-  poiLat = 45.508048; // Default coordinates is MTL
-  poiLng = -73.568025;
-  zoom = 13;
-  // Map marker's icons
-  driverIconImage = 'assets/images/map/CarIcon_top_sm.png';
-  driverIcon = {
-      url: this.driverIconImage,
-      scaledSize: {
-          width: 60,
-          height: 30
-      }
-  };
-  poiIconImage = 'assets/images/map/iconPoi.png';
-  poiIcon = {
-      url: this.poiIconImage,
-      scaledSize: {
-          width: 30,
-          height: 40
-      }
-  };
+  public loading: boolean;
+  public selectedStation: ChargingStation; // for station detail
+  public stationsList: ChargingStation[];
+  public searchControl: FormControl;
+
+  @ViewChild('search')
+  public searchElementRef: ElementRef;
+
+  // Map default values, including lat/lng default value (MTL)
+  public driver: Marker;
+  public locationChosen = false;
+  public poiLat = 45.508048;
+  public poiLng = -73.568025;
+  public zoom = 13;
+  public driverIcon = iconDriver;
+  public poiIcon = iconPoi;
 
   constructor(
     private searchService: SearchStationsService,
+    private mapsAPILoader: MapsAPILoader,
+    private ngZone: NgZone
     // private toastr: ToastrService
   ) { }
 
   ngOnInit() {
+    // initiate search FormControl
+    this.searchControl = new FormControl();
+
+    // Search stations based on my location (browser enabled)
     this.searchStationsNearMe();
-    console.log('# DRIVER: ', this.driver);
+
+    // Place search options
+    const placeOptions = {
+      types: ['address'], // limit search to addresses
+      componentRestrictions: {country: 'ca'}
+    };
+
+    // Load Places Autocomplete
+    this.mapsAPILoader.load().then(() => {
+      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, placeOptions);
+
+      autocomplete.addListener('place_changed', () => {
+        this.ngZone.run(() => {
+          // Get place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
+
+          // Verify result
+          if (place.geometry === undefined || place.geometry === null) {
+            return;
+          }
+
+          // Update lat/lng and zoom. Turn location marker on
+          this.poiLat = place.geometry.location.lat();
+          this.poiLng = place.geometry.location.lng();
+          this.zoom = 12;
+          this.locationChosen = true;
+        });
+      });
+    });
   }
 
   onSubmit() {
@@ -85,7 +102,8 @@ export class HomeMapComponent implements OnInit {
   }
 
   /**
-   * Method uses searchService (observer) to call api/find-station. Returns an array of CSs
+   * Method uses searchService (observer) to call api/find-station.
+   * Returns an array of CSs
    *
    * @param lat, lng
    */
@@ -106,33 +124,28 @@ export class HomeMapComponent implements OnInit {
     this.locationChosen = true;
   }
   /**
-   * Search stations near User's location (from navigator, if not avail 
+   * Search stations near User's location (from navigator, if not available
    * use MTL coords) then, displays driver and CSs on map.
    */
   searchStationsNearMe(): void {
     getCurrentPosition.subscribe( position => {
         this.poiLat = position.coords.latitude;
         this.poiLng = position.coords.longitude;
+
         // Get stations near User's location
         this.findStations(this.poiLat, this.poiLng);
         this.displayUser(this.poiLat, this.poiLng);
       }, error => {
+        // TODO add toaster warning (GPS signal not found)
         console.log('# ERROR at searchStationsNearMe(). Message: ', error);
+
         // Get stations near default MTL coords
         this.findStations(this.poiLat, this.poiLng);
     });
   }
-  /**
-   *  Method to create a marker and display user locaiton on map
-   */
+  // Create a marker and display user locaiton on map
   displayUser(lat, lng) {
-    console.log('# displayUser(): ', lat, lng);
-    this.driver = new Marker(
-      lat,
-      lng,
-      'D',
-      this.driverIcon
-    );
+    this.driver = new Marker(lat, lng, 'Driver', this.driverIcon);
   }
 }
 
